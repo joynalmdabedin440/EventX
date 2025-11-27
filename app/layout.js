@@ -1,6 +1,7 @@
 
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import Header from "@/components/Header";
 
 
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           {/* Header */}
+          <Header/>
 
           <main className=" relative min-h-screen container mx-auto pt-40 md:pt-32">
             {/* glow */}
@@ -33,13 +35,19 @@ export default function RootLayout({ children }) {
 
             </div>
 
-            <div className="relative z-10">
+            <div className="relative z-10 min-h-[70vh]">
               {children}
 
             </div>
 
 
             {/* Footer */}
+            <footer className="border-t border-gray-800/50 py-10 px-6 max-w-7xl mx-auto">
+              <div className="text-sm text-gray-400">
+                EventX &copy; {new Date().getFullYear()}. All rights reserved.
+
+              </div>
+            </footer>
 
           </main>
         </ThemeProvider>
