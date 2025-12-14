@@ -13,7 +13,7 @@ const Header = () => {
                     <Link href="/" className=' flex items-center'>
                         <Image
                             src="/event.png" alt="EventX Logo" width={500} height={500}
-                            className="w-full h-20"
+                            className="w-full h-11"
                             priority
                         />
                         {/* pro badge */}
@@ -23,18 +23,20 @@ const Header = () => {
                     {/* Right side actions */}
                     <div className='flex items-center'>
                         {/* Sign In / Sign Up buttons or User Profile */}
+                        <SignedIn>
+                            <UserButton />
+                        </SignedIn>
+                        
                         <SignedOut>
-                            <SignInButton mode='modal'>
-                                <Button>Sign In</Button>
+                            <SignInButton>
+                                <Button className="hover:cursor-pointer hover:bg-blue-600">Sign In</Button>
 
                             </SignInButton>
                             <SignUpButton>
 
                             </SignUpButton>
                         </SignedOut>
-                        <SignedIn>
-                            <UserButton />
-                        </SignedIn>
+                        
                     </div>
                 </div>
                 {/* Mobile search and location -below header */}
