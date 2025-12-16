@@ -34,6 +34,11 @@ export const store = mutation({
             imageUrl: identity.pictureUrl,
             hasCompletedOnboarding: false,
             freeEventsCreated: 0,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            
+            
+
         });
     },
 });
