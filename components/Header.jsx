@@ -7,6 +7,7 @@ import { Button } from './ui/button'
 import { Authenticated, Unauthenticated } from 'convex/react'
 import { BarLoader } from 'react-spinners'
 import { useStoreUserEffect } from '@/hooks/use-store-user';
+import { Plus } from 'lucide-react';
 
 const Header = () => {
 
@@ -38,6 +39,18 @@ const Header = () => {
                         </Button>
                         {/* Sign In / Sign Up buttons or User Profile */}
                         <Authenticated>
+                            <Button variant={"ghost"} size="small" asChild className={"flex gap-2 mr-4"}>
+                                <Link href="/create-event">
+                                    
+                                    <Plus className='w-4 h-4' />
+                                    
+                                    <span className='hidden md:inline'>
+                                        Create Event
+                                    </span>
+
+                                    </Link>
+
+                            </Button>
                             <UserButton />
                         </Authenticated>
 
