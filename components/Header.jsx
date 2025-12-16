@@ -2,7 +2,7 @@
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Authenticated, Unauthenticated } from 'convex/react'
 import { BarLoader } from 'react-spinners'
@@ -11,6 +11,7 @@ import { useStoreUserEffect } from '@/hooks/use-store-user';
 const Header = () => {
 
     const { isLoading } = useStoreUserEffect();
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     return (
         <>
             <nav className='fixed top-0 left-0 right-0 bg-black/50 border-b border-white/10 backdrop-blur-xl z-20 '>
@@ -28,6 +29,13 @@ const Header = () => {
                     {/* Search and location desktop view */}
                     {/* Right side actions */}
                     <div className='flex items-center'>
+
+                        <Button variant={"ghost"} size="small" onClick={setShowUpgradeModal} className={"mr-2 "} >
+                            Pricing
+                        </Button>
+                        <Button variant={"ghost"} size="small" asChild className={"mr-2"} >
+                            <Link href="/explore">Explore</Link>
+                        </Button>
                         {/* Sign In / Sign Up buttons or User Profile */}
                         <Authenticated>
                             <UserButton />
