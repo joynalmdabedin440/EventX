@@ -33,7 +33,7 @@ export default function Home() {
 
             <Link href="/explore">
               <Button size="xl" className={"rounded-full"}>
-                Get Started
+                Get Starte
               </Button>
             </Link>
           </div>
