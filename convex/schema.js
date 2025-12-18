@@ -28,41 +28,52 @@ export default defineSchema({
         updatedAt: v.number(),
     }).index("by_token", ["tokenIdentifier"]),
     
-    events: defineTable({
-        title: v.string(),
-        description: v.string(),
-        slug: v.string(),
+      // Events table
+  events: defineTable({
+    title: v.string(),
+    description: v.string(),
+    slug: v.string(),
 
-        //organizer
-        organizerId: v.id("users"),
-        organizerName: v.string(),
+    // Organizer
+    organizerId: v.id("users"),
+    organizerName: v.string(),
 
-        //date and time
-        startTime: v.number(),
-        endTime: v.number(),
-        timezone: v.string(),
+    // Event details
+    category: v.string(),
+    tags: v.array(v.string()),
 
-        //location
-        locationType: v.union(v.literal("physical"), v.literal("online")),
-        venue: v.optional(v.string()),
-        address: v.optional(v.string()),
-        city: v.string(),
-        state: v.optional(v.string()),
+    // Date & Time
+    startDate: v.number(),
+    endDate: v.number(),
+    timezone: v.string(),
 
-        //capacity and tickets
-        capacity: v.number(),
-        ticketType: v.union(v.literal("free"), v.literal("paid")),
-        ticketPrice: v.optional(v.number()),
-        registrationCount: v.number(),
+    // Location
+    locationType: v.union(v.literal("physical"), v.literal("online")),
+    venue: v.optional(v.string()),
+    address: v.optional(v.string()),
+    city: v.string(),
+    state: v.optional(v.string()), // Added state field
+    country: v.string(),
 
-        //customization
-        coverImage: v.optional(v.string()),
-        themeColor: v.optional(v.string()),
+    // Capacity & Ticketing
+    capacity: v.number(),
+    ticketType: v.union(v.literal("free"), v.literal("paid")),
+    ticketPrice: v.optional(v.number()), // Paid at event offline
+    registrationCount: v.number(),
 
-        //timestamps
-        createdAt: v.number(),
-        updatedAt: v.number(),
-    }).index("by_organizer", ["organizerId"]).index("by_category",["category"]).index("by_start_date",["startDate"]).index("by_slug", ["slug"]).searchIndex("search_title",{searchField:"title"}),
+    // Customization
+    coverImage: v.optional(v.string()),
+    themeColor: v.optional(v.string()),
+
+    // Timestamps
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_organizer", ["organizerId"])
+    .index("by_category", ["category"])
+    .index("by_start_date", ["startDate"])
+    .index("by_slug", ["slug"])
+    .searchIndex("search_title", { searchField: "title" }),
 
     registrations: defineTable({
         eventId: v.id("events"),
