@@ -32,8 +32,8 @@ export default function Home() {
             </p>
 
             <Link href="/explore">
-              <Button size="xl" className={"rounded-full"}>
-                Get Starte
+              <Button size="xl" className={"rounded-full bg-white text-black hover:bg-gray-400 hover:cursor-pointer "}>
+                Get Started
               </Button>
             </Link>
           </div>
@@ -41,7 +41,7 @@ export default function Home() {
           {/* Right - 3D Phone Mockup */}
           <div className="relative block">
             <Image
-              src="/hero.png"
+              src="/hero.gif"
               // src="/hero.gif"
               alt="react meetup"
               width={700}
