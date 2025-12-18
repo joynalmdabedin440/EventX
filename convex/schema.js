@@ -28,10 +28,11 @@ export default defineSchema({
         updatedAt: v.number(),
     }).index("by_token", ["tokenIdentifier"]),
     
-    events: defineTable({
-        title: v.string(),
-        description: v.string(),
-        slug: v.string(),
+      // Events table
+  events: defineTable({
+    title: v.string(),
+    description: v.string(),
+    slug: v.string(),
 
     // Organizer
     organizerId: v.id("users"),
