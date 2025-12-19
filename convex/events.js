@@ -141,6 +141,6 @@ export const deleteEvent = mutation({
       });
     }
 
-    return { success: true };
+    return { success: true }
   },
 });
