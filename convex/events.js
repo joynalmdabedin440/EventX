@@ -10,7 +10,10 @@ export const getFeaturedEvents = query({
 
     const events = await ctx.db
       .query("events")
-      .withIndex("by_start_time")
+      .withIndex("by_start_date")
+      .filter((q) => q.gte(q.field("startDate"), now))
+      .order("desc")
+      .collect()
 
   }
 })
