@@ -14,6 +14,13 @@ export const getFeaturedEvents = query({
       .filter((q) => q.gte(q.field("startDate"), now))
       .order("desc")
       .collect()
+    
+    //sort by registration count for featured
+    const featured = events
+      .sort((a, b) => b.registrationCount - a.registrationCount)
+      .slice(0, args.limit ?? 3);
+    
+    return featured;
 
   }
 })
