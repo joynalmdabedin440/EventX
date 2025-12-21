@@ -84,9 +84,27 @@ export const getPopularEvents = query({
       .slice(0, args.limit ?? 6);
     
     return popular;
-    
+
     
   },
 })
+
+// Get events by category with pagination
+export const getEventsByCategory = query({
+  args: {
+    category: v.string(),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+    const events = await ctx.db
+      .query("events")
+      .withIndex("by_category", (q) => q.eq("category", args.category))
+      .filter((q) => q.gte(q.field("startDate"), now))
+      .collect();
+
+    return events.slice(0, args.limit ?? 12);
+  },
+});
 
 
