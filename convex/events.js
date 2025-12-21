@@ -107,4 +107,24 @@ export const getEventsByCategory = query({
   },
 });
 
+// Get event counts by category
+export const getCategoryCounts = query({
+  handler: async (ctx) => {
+    const now = Date.now();
+    const events = await ctx.db
+      .query("events")
+      .withIndex("by_start_date")
+      .filter((q) => q.gte(q.field("startDate"), now))
+      .collect();
+
+    // Count events by category
+    const counts = {};
+    events.forEach((event) => {
+      counts[event.category] = (counts[event.category] || 0) + 1;
+    });
+
+    return counts;
+  },
+});
+
 
