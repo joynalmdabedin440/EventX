@@ -31,7 +31,7 @@ export const getEventsByLocation = query({
   args: {
     city: v.optional(v.string()),
     state: v.optional(v.string()),
-    limit:v.optional(v.number())
+    limit: v.optional(v.number())
   },
   handler: async (ctx, args) => {
     const now = Date.now();
@@ -46,18 +46,47 @@ export const getEventsByLocation = query({
 
     if (args.city) {
       events = events.filter(
-        (event)=> event.city.toLowerCase()===args.city.toLowerCase()
+        (event) => event.city.toLowerCase() === args.city.toLowerCase()
       )
     }
     else if (args.state) {
       events = events.filter(
-        (event)=> event.state?.toLowerCase()===args.state.toLowerCase()
+        (event) => event.state?.toLowerCase() === args.state.toLowerCase()
       )
     }
 
     return events.slice(0, args.limit ?? 4);
     
   },
-  
 
+
+});
+
+// get popular events by registration count
+
+export const getPopularEvents = query({
+  args: {
+    limit: v.optional(v.number()),
+  },
+
+  handler: async (ctx, args) => {
+    const now = Date.now();
+
+    const events = await ctx.db
+      .query("events")
+      .withIndex("by_start_date")
+      .filter((q) => q.gte(q.field("startDate"), now))
+      .collect();
+    
+    // sort by registration count 
+    const popular = events
+      .sort((a, b) => b.registrationCount - a.registrationCount)
+      .slice(0, args.limit ?? 6);
+    
+    return popular;
+    
+    
+  },
 })
+
+
