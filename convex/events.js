@@ -123,7 +123,7 @@ export const getCategoryCounts = query({
       counts[event.category] = (counts[event.category] || 0) + 1;
     });
 
-    return counts;
+    return counts
   },
 });
 
