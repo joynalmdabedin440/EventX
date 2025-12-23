@@ -90,7 +90,7 @@ export default defineSchema({
         checkedIn: v.boolean(),
         checkedInAt: v.optional(v.number()),
         //status
-        status: v.union(v.literal("confirmed"), v.literal("cancelled")),
+        status: v.union(v.literal("confirmed"), v.literal("cancelled"))
 
 
 
