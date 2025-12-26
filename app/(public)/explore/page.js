@@ -14,8 +14,13 @@ const ExplorePage = () => {
     
     //fetch event by location
 
-    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.events.getByLocation, { city: currentUser?.location?.city || 'Dhaka', state: currentUser?.location.state || "Dhaka", limit: 4 });
+    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.events.getEventsByLocation, { city: currentUser?.location?.city || 'Dhaka', state: currentUser?.location?.state || "Dhaka", limit: 4 });
+
+    //get popular events
+    const { data: popularEvents, isLoading: loadingPopular } = useConvexQuery(api.events.getPopularEvents, { limit: 6 });
     
+    //category count
+    const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
     
   return (
     <div>
