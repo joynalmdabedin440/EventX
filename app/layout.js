@@ -28,8 +28,8 @@ export default function RootLayout({ children }) {
         >
           <ClerkProvider
             appearance={{
-            theme: dark,
-          }}>
+              theme: dark,
+            }}>
             <ConvexClientProvider>
 
 
@@ -68,5 +68,5 @@ export default function RootLayout({ children }) {
 
       </body>
     </html>
-  )
+  );
 }
