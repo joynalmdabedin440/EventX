@@ -2,10 +2,15 @@
 import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 
-import React from 'react'
+import React, { use } from 'react'
 
 const ExplorePage = () => {
-    const { data:featuredEvents, isLoading:loadingFeatured } = useConvexQuery(api.events.getFeaturedEvents)
+    //fetch current users
+    const data = useConvexQuery(api.users.getCurrentUser);
+    console.log(data.data.email);
+    
+
+    const { data:featuredEvents, isLoading:loadingFeatured } = useConvexQuery(api.events.getFeaturedEvents, { limit: 3 });
     
     
   return (
