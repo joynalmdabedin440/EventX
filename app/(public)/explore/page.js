@@ -6,11 +6,15 @@ import React, { use } from 'react'
 
 const ExplorePage = () => {
     //fetch current users
-    const data = useConvexQuery(api.users.getCurrentUser);
-    console.log(data.data.email);
+    const { data: currentUser } = useConvexQuery(api.users.getCurrentUser);
     
+    
+    //fetch featured events
+    const { data: featuredEvents, isLoading: loadingFeatured } = useConvexQuery(api.events.getFeaturedEvents, { limit: 3 });
+    
+    //fetch event by location
 
-    const { data:featuredEvents, isLoading:loadingFeatured } = useConvexQuery(api.events.getFeaturedEvents, { limit: 3 });
+    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.events.getByLocation, { city: currentUser?.location?.city || 'Dhaka', state: currentUser?.location.state || "Dhaka", limit: 4 });
     
     
   return (
