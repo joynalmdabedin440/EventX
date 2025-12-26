@@ -2,6 +2,7 @@ import { useQuery, useMutation } from "convex/react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
+
 export const useConvexQuery = (query, ...args) => {
   const result = useQuery(query, ...args);
   const [data, setData] = useState(undefined);
