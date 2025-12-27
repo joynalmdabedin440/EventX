@@ -1,4 +1,5 @@
 "use client"
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { api } from '@/convex/_generated/api'
@@ -36,6 +37,7 @@ const ExplorePage = () => {
     const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
 
     const handleEventClick = (eventId) => {
+       
         router.push(`/events/${eventId}`);
 
     }
@@ -61,11 +63,23 @@ const ExplorePage = () => {
                             <CarouselContent>
                                 {featuredEvents.map((event) => (
                                     <CarouselItem key={event._id}>
-                                        <div onClick={handleEventClick}
+                                        <div onClick={() => handleEventClick(event._id)}
                                             className='relative h-[400px] rounded-xl overflow-hidden cursor-pointer'>
                                             {
-                                                event.coverImage ?(<Image src={event.coverImage} alt={event.title} fill className="object-cover" />) : (<></>)
+                                                event.coverImage ?(<Image src={event.coverImage} alt={event.title} fill className="object-cover" priority />) : (<div className='absolute inset-0' style={{backgroundColor:event.themeColor}}>No Image</div>)
                                             }
+
+                                            <div className='absolute inset-0 bg-linear-to-r from-black/60 to-black/30'>
+
+                                            </div>
+                                            <div className='relative h-full flex-col justify-end p-8 md:p-12'>
+                                                <Badge className="w-fit mb-4" variant="secondary">
+                                                    {event.city},{
+                                                        event.state || event.country
+                                                    }
+                                                </Badge>
+
+                                            </div>
 
                                         </div>
                                         
