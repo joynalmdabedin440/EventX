@@ -4,10 +4,15 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import Autoplay from 'embla-carousel-autoplay'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
 
 import React, { use } from 'react'
 
 const ExplorePage = () => {
+
+    const router = useRouter();
 
     //Autoplay Carousel hook
     const plugin = React.useRef(
@@ -30,6 +35,11 @@ const ExplorePage = () => {
     //category count
     const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
 
+    const handleEventClick = (eventId) => {
+        router.push(`/events/${eventId}`);
+
+    }
+
     return (
         <>
             {/* Hero Title */}
@@ -49,8 +59,15 @@ const ExplorePage = () => {
                             onMouseLeave={() => plugin.current.reset()}    
                         >
                             <CarouselContent>
-                                {Array.from({ length: 5 }).map((_, index) => (
-                                    <CarouselItem key={index}>
+                                {featuredEvents.map((event) => (
+                                    <CarouselItem key={event._id}>
+                                        <div onClick={handleEventClick}
+                                            className='relative h-[400px] rounded-xl overflow-hidden cursor-pointer'>
+                                            {
+                                                event.coverImage ?(<Image src={event.coverImage} alt={event.title} fill className="object-cover" />) : (<></>)
+                                            }
+
+                                        </div>
                                         
                                     </CarouselItem>
                                 ))}
