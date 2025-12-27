@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation'
 import React, { use } from 'react'
 import { createLocationSlug } from '@/lib/location-utils'
 import { Button } from '@/components/ui/button'
+import EventCard from '@/components/event-card'
 
 const ExplorePage = () => {
 
