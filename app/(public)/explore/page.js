@@ -15,6 +15,8 @@ import React, { use } from 'react'
 import { createLocationSlug } from '@/lib/location-utils'
 import { Button } from '@/components/ui/button'
 import EventCard from '@/components/event-card'
+import { CATEGORIES } from '@/lib/data'
+import { Card, CardContent } from '@/components/ui/card'
 
 const ExplorePage = () => {
 
@@ -44,14 +46,26 @@ const ExplorePage = () => {
     //category count
     const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
 
+    const categoriesWithCounts = CATEGORIES.map(cat => {
+        return {
+            ...cat,
+            count: categoryCounts?.[cat.id] || 0,
+        };
+    })
+
     //handle event click
     const handleEventClick = (eventId) => {
 
         router.push(`/events/${eventId}`);
 
     }
+    const handleCategoryClick = (categoryId) => {
 
-    //
+        router.push(`/events/${categoryId}`);
+
+    }
+
+    // handle view local events
     const handleViewLocalEvents = () => {
         const city = currentUser?.location?.city || 'Gurgaon';
         const state = currentUser?.location?.state || 'Haryana';
@@ -183,6 +197,33 @@ const ExplorePage = () => {
                     </div>
                 </div>
             )}
+            {/* Browse by category */}
+            <div className='mb-16'>
+                <h2 className='text-3xl font-bold mb-6'>Browse by Category</h2>
+                <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
+                    {categoriesWithCounts.map((category) => (
+                        <Card key={category.id}
+                            className="py-2 cursor-pointer hover:shadow-lg transition-all hover:border-purple-500"
+                            onClick={() => handleCategoryClick(category.id)}
+                        >
+                            <CardContent className="flex sm:p-6 px-3 items-center gap-3">
+                                <div className='text-3xl sm:text-4xl'>{category.icon}</div>
+                                
+                                <div className='flex-1 min-w-0'>
+                                    <h3 className='font-semibold text-lg mb-1 group-hover:text-purple-400 transition-colors'>{category.label}</h3>
+                                    <p className='text-sm text-muted-foreground'>
+                                        {category.count} Event 
+                                        {category.count === 1 ? '' : 's'}
+                                    </p>
+                                </div>
+
+                            </CardContent>
+                        </Card>
+                    ))}
+
+                </div>
+            </div>
+
              {/* Featured Events Section */}
 
             {/* Popular Events Section */}
