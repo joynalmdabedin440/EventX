@@ -1,10 +1,13 @@
 "use client"
 import { Badge } from '@/components/ui/badge'
+import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent } from '@/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import Autoplay from 'embla-carousel-autoplay'
+import { format } from 'date-fns'
+import { MapPin, Users } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -17,8 +20,8 @@ const ExplorePage = () => {
 
     //Autoplay Carousel hook
     const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  )
+        Autoplay({ delay: 2000, stopOnInteraction: true })
+    )
     //fetch current users
     const { data: currentUser } = useConvexQuery(api.users.getCurrentUser);
 
@@ -37,7 +40,7 @@ const ExplorePage = () => {
     const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
 
     const handleEventClick = (eventId) => {
-       
+
         router.push(`/events/${eventId}`);
 
     }
@@ -58,7 +61,7 @@ const ExplorePage = () => {
                     <div className='mb-16'>
                         <Carousel className="w-full" plugins={[plugin.current]}
                             onMouseEnter={() => plugin.current.stop()}
-                            onMouseLeave={() => plugin.current.reset()}    
+                            onMouseLeave={() => plugin.current.reset()}
                         >
                             <CarouselContent>
                                 {featuredEvents.map((event) => (
@@ -66,7 +69,7 @@ const ExplorePage = () => {
                                         <div onClick={() => handleEventClick(event._id)}
                                             className='relative h-[400px] rounded-xl overflow-hidden cursor-pointer'>
                                             {
-                                                event.coverImage ?(<Image src={event.coverImage} alt={event.title} fill className="object-cover" priority />) : (<div className='absolute inset-0' style={{backgroundColor:event.themeColor}}>No Image</div>)
+                                                event.coverImage ? (<Image src={event.coverImage} alt={event.title} fill className="object-cover" priority />) : (<div className='absolute inset-0' style={{ backgroundColor: event.themeColor }}>No Image</div>)
                                             }
 
                                             <div className='absolute inset-0 bg-linear-to-r from-black/60 to-black/30'>
@@ -78,11 +81,38 @@ const ExplorePage = () => {
                                                         event.state || event.country
                                                     }
                                                 </Badge>
+                                                <h2 className="text-3xl md:text-5xl font-bold mb-3 text-white">
+                                                    {event.title}
+                                                </h2>
+                                                <p className="text-lg text-white/90 mb-4 max-w-2xl line-clamp-2">
+                                                    {event.description}
+                                                </p>
+                                                <div className="flex items-center gap-4 text-white/80">
+                                                    <div className="flex items-center gap-2">
+                                                        <Calendar className="w-4 h-4" />
+                                                        <span className="text-sm">
+                                                            {format(event.startDate, "PPP")}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <MapPin className="w-4 h-4" />
+                                                        <span className="text-sm">{event.city}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <Users className="w-4 h-4" />
+                                                        <span className="text-sm">
+                                                            {event.registrationCount} registered
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+
+
 
                                             </div>
 
                                         </div>
-                                        
+
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
