@@ -3,10 +3,16 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
+import Autoplay from 'embla-carousel-autoplay'
 
 import React, { use } from 'react'
 
 const ExplorePage = () => {
+
+    //Autoplay Carousel hook
+    const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  )
     //fetch current users
     const { data: currentUser } = useConvexQuery(api.users.getCurrentUser);
 
@@ -38,17 +44,14 @@ const ExplorePage = () => {
             {
                 featuredEvents && featuredEvents.length > 0 && (
                     <div className='mb-16'>
-                        <Carousel className="w-full ">
+                        <Carousel className="w-full" plugins={[plugin.current]}
+                            onMouseEnter={() => plugin.current.stop()}
+                            onMouseLeave={() => plugin.current.reset()}    
+                        >
                             <CarouselContent>
                                 {Array.from({ length: 5 }).map((_, index) => (
                                     <CarouselItem key={index}>
-                                        <div className="p-1">
-                                            <Card>
-                                                <CardContent className="flex aspect-square items-center justify-center p-6">
-                                                    <span className="text-4xl font-semibold">{index + 1}</span>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
+                                        
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
