@@ -1,18 +1,18 @@
 "use client"
 import { Badge } from '@/components/ui/badge'
-import { Calendar } from '@/components/ui/calendar'
-import { Card, CardContent } from '@/components/ui/card'
+
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import Autoplay from 'embla-carousel-autoplay'
 import { format } from 'date-fns'
-import { MapPin, Users } from 'lucide-react'
+import { Calendar, MapPin, Users } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 
 import React, { use } from 'react'
+import { createLocationSlug } from '@/lib/location-utils'
 
 const ExplorePage = () => {
 
@@ -38,12 +38,21 @@ const ExplorePage = () => {
 
     //category count
     const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
-
+    
+    //handle event click
     const handleEventClick = (eventId) => {
 
         router.push(`/events/${eventId}`);
 
     }
+
+    //
+    const handleViewLocalEvents = () => {
+        const city = currentUser?.location?.city || 'Dhaka';
+        const state = currentUser?.location?.state || 'Dhaka';
+        const slug= createLocationSlug(city, state);
+        router.push(`/explore/${slug}`);
+     }
 
     return (
         <>
@@ -117,8 +126,8 @@ const ExplorePage = () => {
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
-                            <CarouselPrevious />
-                            <CarouselNext />
+                            <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
+                            <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
                         </Carousel>
                         </div>
                     </div>
