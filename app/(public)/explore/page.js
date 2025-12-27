@@ -6,13 +6,14 @@ import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import Autoplay from 'embla-carousel-autoplay'
 import { format } from 'date-fns'
-import { Calendar, MapPin, Users } from 'lucide-react'
+import { ArrowRight, Calendar, Loader2, MapPin, Users } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 
 import React, { use } from 'react'
 import { createLocationSlug } from '@/lib/location-utils'
+import { Button } from '@/components/ui/button'
 
 const ExplorePage = () => {
 
@@ -38,7 +39,7 @@ const ExplorePage = () => {
 
     //category count
     const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
-    
+
     //handle event click
     const handleEventClick = (eventId) => {
 
@@ -50,9 +51,19 @@ const ExplorePage = () => {
     const handleViewLocalEvents = () => {
         const city = currentUser?.location?.city || 'Dhaka';
         const state = currentUser?.location?.state || 'Dhaka';
-        const slug= createLocationSlug(city, state);
+        const slug = createLocationSlug(city, state);
         router.push(`/explore/${slug}`);
-     }
+    }
+
+    const isLoading = loadingFeatured || loadingLocalEvents || loadingPopular;
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Loader2 className="animate-spin w-8 h-8 text-purple-500" />
+            </div>
+        );
+    }
 
     return (
         <>
@@ -78,65 +89,97 @@ const ExplorePage = () => {
                                         <CarouselItem key={event._id}>
                                             <div onClick={() => handleEventClick(event._id)}
                                                 className='relative h-[400px] rounded-xl overflow-hidden cursor-pointer'>
-                                            {
-                                                event.coverImage ? (<Image src={event.coverImage} alt={event.title} fill className="object-cover" priority />) : (<div className='absolute inset-0' style={{ backgroundColor: event.themeColor }}>No Image</div>)
-                                            }
+                                                {
+                                                    event.coverImage ? (<Image src={event.coverImage} alt={event.title} fill className="object-cover" priority />) : (<div className='absolute inset-0' style={{ backgroundColor: event.themeColor }}>No Image</div>)
+                                                }
 
-                                            <div className='absolute inset-0 bg-linear-to-r from-black/60 to-black/30'>
+                                                <div className='absolute inset-0 bg-linear-to-r from-black/60 to-black/30'>
 
-                                            </div>
-                                            <div className='relative h-full flex-col justify-end p-8 md:p-12'>
-                                                <Badge className="w-fit mb-4" variant="secondary">
-                                                    {event.city},{
-                                                        event.state || event.country
-                                                    }
-                                                </Badge>
-                                                <h2 className="text-3xl md:text-5xl font-bold mb-3 text-white">
-                                                    {event.title}
-                                                </h2>
-                                                <p className="text-lg text-white/90 mb-4 max-w-2xl line-clamp-2">
-                                                    {event.description}
-                                                </p>
-                                                <div className="flex items-center gap-4 text-white/80">
-                                                    <div className="flex items-center gap-2">
-                                                        <Calendar className="w-4 h-4" />
-                                                        <span className="text-sm">
-                                                            {format(event.startDate, "PPP")}
-                                                        </span>
+                                                </div>
+                                                <div className='relative h-full flex-col justify-end p-8 md:p-12'>
+                                                    <Badge className="w-fit mb-4" variant="secondary">
+                                                        {event.city},{
+                                                            event.state || event.country
+                                                        }
+                                                    </Badge>
+                                                    <h2 className="text-3xl md:text-5xl font-bold mb-3 text-white">
+                                                        {event.title}
+                                                    </h2>
+                                                    <p className="text-lg text-white/90 mb-4 max-w-2xl line-clamp-2">
+                                                        {event.description}
+                                                    </p>
+                                                    <div className="flex items-center gap-4 text-white/80">
+                                                        <div className="flex items-center gap-2">
+                                                            <Calendar className="w-4 h-4" />
+                                                            <span className="text-sm">
+                                                                {format(event.startDate, "PPP")}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <MapPin className="w-4 h-4" />
+                                                            <span className="text-sm">{event.city}</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <Users className="w-4 h-4" />
+                                                            <span className="text-sm">
+                                                                {event.registrationCount} registered
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <MapPin className="w-4 h-4" />
-                                                        <span className="text-sm">{event.city}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <Users className="w-4 h-4" />
-                                                        <span className="text-sm">
-                                                            {event.registrationCount} registered
-                                                        </span>
-                                                    </div>
+
+
+
+
                                                 </div>
 
-
-
-
                                             </div>
 
-                                        </div>
-
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
-                            <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
-                            <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
-                        </Carousel>
+                                        </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                                <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
+                                <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
+                            </Carousel>
                         </div>
                     </div>
                 )
             }
 
-            {/* Featured Events Section */}
+           
 
             {/* Local Events Section */}
+
+            {localEvents && localEvents.length > 0 && (
+                <div className="mb-16">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 className="text-3xl font-bold mb-1">Events Near You</h2>
+                            <p className="text-muted-foreground">
+                                Happening in {currentUser?.location?.city || "your area"}
+                            </p>
+                        </div>
+                        <Button
+                            variant="outline"
+                            className="gap-2"
+                            onClick={handleViewLocalEvents}
+                        >
+                            View All <ArrowRight className="w-4 h-4" />
+                        </Button>
+                    </div>
+
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {localEvents.map((event) => (
+                            <EventCard
+                                key={event._id}
+                                event={event}
+                                variant="compact"
+                                onClick={() => handleEventClick(event.slug)}
+                            />
+                        ))}
+                    </div> */}
+                </div>
+            )}
+             {/* Featured Events Section */}
 
             {/* Popular Events Section */}
 
