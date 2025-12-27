@@ -32,7 +32,10 @@ const ExplorePage = () => {
 
     //fetch event by location
 
-    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.events.getEventsByLocation, { city: currentUser?.location?.city || 'Dhaka', state: currentUser?.location?.state || "Dhaka", limit: 4 });
+    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.events.getEventsByLocation, { city: currentUser?.location?.city || 'Gurgaon', state: currentUser?.location?.state || "Haryana", limit: 4 });
+
+    console.log(localEvents);
+    
 
     //get popular events
     const { data: popularEvents, isLoading: loadingPopular } = useConvexQuery(api.events.getPopularEvents, { limit: 6 });
@@ -49,8 +52,8 @@ const ExplorePage = () => {
 
     //
     const handleViewLocalEvents = () => {
-        const city = currentUser?.location?.city || 'Dhaka';
-        const state = currentUser?.location?.state || 'Dhaka';
+        const city = currentUser?.location?.city || 'Gurgaon';
+        const state = currentUser?.location?.state || 'Haryana';
         const slug = createLocationSlug(city, state);
         router.push(`/explore/${slug}`);
     }
@@ -160,14 +163,14 @@ const ExplorePage = () => {
                         </div>
                         <Button
                             variant="outline"
-                            className="gap-2"
+                            className="gap-2 text-purple-600 hover:bg-purple-50 cursor-pointer"
                             onClick={handleViewLocalEvents}
                         >
                             View All <ArrowRight className="w-4 h-4" />
                         </Button>
                     </div>
 
-                    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {localEvents.map((event) => (
                             <EventCard
                                 key={event._id}
@@ -176,7 +179,7 @@ const ExplorePage = () => {
                                 onClick={() => handleEventClick(event.slug)}
                             />
                         ))}
-                    </div> */}
+                    </div>
                 </div>
             )}
              {/* Featured Events Section */}
