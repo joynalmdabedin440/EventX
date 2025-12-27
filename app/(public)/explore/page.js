@@ -59,15 +59,16 @@ const ExplorePage = () => {
             {
                 featuredEvents && featuredEvents.length > 0 && (
                     <div className='mb-16'>
-                        <Carousel className="w-full" plugins={[plugin.current]}
-                            onMouseEnter={() => plugin.current.stop()}
-                            onMouseLeave={() => plugin.current.reset()}
-                        >
-                            <CarouselContent>
-                                {featuredEvents.map((event) => (
-                                    <CarouselItem key={event._id}>
-                                        <div onClick={() => handleEventClick(event._id)}
-                                            className='relative h-[400px] rounded-xl overflow-hidden cursor-pointer'>
+                        <div className="relative">
+                            <Carousel className="w-full" plugins={[plugin.current]}
+                                onMouseEnter={() => plugin.current.stop()}
+                                onMouseLeave={() => plugin.current.reset()}
+                            >
+                                <CarouselContent>
+                                    {featuredEvents.map((event) => (
+                                        <CarouselItem key={event._id}>
+                                            <div onClick={() => handleEventClick(event._id)}
+                                                className='relative h-[400px] rounded-xl overflow-hidden cursor-pointer'>
                                             {
                                                 event.coverImage ? (<Image src={event.coverImage} alt={event.title} fill className="object-cover" priority />) : (<div className='absolute inset-0' style={{ backgroundColor: event.themeColor }}>No Image</div>)
                                             }
@@ -119,7 +120,7 @@ const ExplorePage = () => {
                             <CarouselPrevious />
                             <CarouselNext />
                         </Carousel>
-
+                        </div>
                     </div>
                 )
             }
