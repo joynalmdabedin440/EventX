@@ -268,7 +268,7 @@ const ExplorePage = () => {
                     </Card>
                 )}
             
-            <div>f</div>
+           
 
 
 
