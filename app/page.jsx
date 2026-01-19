@@ -32,7 +32,7 @@ export default function Home() {
             </p>
 
             <Link href="/explore">
-              <Button size="xl" className={"rounded-full bg-white text-black hover:bg-gray-400 hover:cursor-pointer "}>
+              <Button size="xl" className={"rounded-full bg-white text-black hover:bg-gray-400 hover:cursor-pointer"}>
                 Get Started
               </Button>
             </Link>
