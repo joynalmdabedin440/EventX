@@ -13,7 +13,7 @@ export default function Home() {
           <div className="text-center sm:text-left">
             <div className="mb-6">
               <span className="text-gray-500 font-light tracking-wide">
-                Event<span className="text-purple-400">*</span>
+                EventX<span className="text-purple-400">*</span>
               </span>
             </div>
 
