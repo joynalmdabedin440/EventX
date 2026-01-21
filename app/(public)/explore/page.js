@@ -249,7 +249,7 @@ const ExplorePage = () => {
 
             {/* Empty State */}
             {!loadingFeatured &&
-                !loadingLocal &&
+                !loadingLocalEvents &&
                 !loadingPopular &&
                 (!featuredEvents || featuredEvents.length === 0) &&
                 (!localEvents || localEvents.length === 0) &&
