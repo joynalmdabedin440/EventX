@@ -3,6 +3,7 @@ import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import { CATEGORIES } from '@/lib/data'
 import { parseLocationSlug } from '@/lib/location-utils'
+import { Loader2 } from 'lucide-react'
 import { notFound, useParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React, { use } from 'react'
@@ -35,6 +36,19 @@ const DynamicExplorePage = () => {
       : city && state ? { city, state, limit: 50 }
         : "skip"
   );
+
+  const handleEventClick = (eventSlug) => { 
+    router.push(`/events/${eventSlug}`);
+  }
+
+  if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Loader2 className="animate-spin w-8 h-8 text-purple-500" />
+            </div>
+        );
+    }
+
   return (
     <div>DynamicExplorePage</div>
   )
