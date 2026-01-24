@@ -1,6 +1,7 @@
 "use client"
 import { CATEGORIES } from '@/lib/data'
-import { useParams } from 'next/navigation'
+import { parseLocationSlug } from '@/lib/location-utils'
+import { notFound, useParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React, { use } from 'react'
 
@@ -13,7 +14,18 @@ const DynamicExplorePage = () => {
   console.log(params);
 
   //check valid category
-  const categoryInfo = CATEGORIES.find((cat)=>cat.id === slug)
+  const categoryInfo = CATEGORIES.find((cat) => cat.id === slug);
+  const isCategory = !!categoryInfo;
+
+  //validate location
+  const { city, state, isValid } = !isCategory ? parseLocationSlug(slug) : { city: null, state: null, isValid: false };
+
+  //if not valid category or location, redirect to explore page
+  if (!isCategory && !isValid) 
+  {
+    notFound()
+    
+  }
   
 
 
