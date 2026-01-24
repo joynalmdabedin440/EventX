@@ -37,7 +37,7 @@ const ExplorePage = () => {
 
     const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.events.getEventsByLocation, { city: currentUser?.location?.city || 'Gurgaon', state: currentUser?.location?.state || "Haryana", limit: 4 });
 
-    console.log(localEvents);
+   // console.log(localEvents);
 
 
     //get popular events
