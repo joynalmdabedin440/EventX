@@ -1,4 +1,6 @@
 "use client"
+import { api } from '@/convex/_generated/api'
+import { useConvexQuery } from '@/hooks/use-convex-query'
 import { CATEGORIES } from '@/lib/data'
 import { parseLocationSlug } from '@/lib/location-utils'
 import { notFound, useParams } from 'next/navigation'
@@ -21,14 +23,18 @@ const DynamicExplorePage = () => {
   const { city, state, isValid } = !isCategory ? parseLocationSlug(slug) : { city: null, state: null, isValid: false };
 
   //if not valid category or location, redirect to explore page
-  if (!isCategory && !isValid) 
-  {
+  if (!isCategory && !isValid) {
     notFound()
-    
+
   }
-  
 
-
+  // get events based on category or location
+  const { data: events, isLoading } = useConvexQuery(
+    isCategory ? api.events.getEventsByCategory : api.events.getEventsByLocation,
+    isCategory ? { category: slug, limit: 50 }
+      : city && state ? { city, state, limit: 50 }
+        : "skip"
+  );
   return (
     <div>DynamicExplorePage</div>
   )
