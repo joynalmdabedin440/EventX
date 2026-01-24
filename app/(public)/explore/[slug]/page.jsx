@@ -1,11 +1,13 @@
 "use client"
+import EventCard from '@/components/event-card'
 import { api } from '@/convex/_generated/api'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import { CATEGORIES } from '@/lib/data'
 import { parseLocationSlug } from '@/lib/location-utils'
+import { is } from 'date-fns/locale'
 import { Loader2 } from 'lucide-react'
-import { notFound, useParams } from 'next/navigation'
-import { useRouter } from 'next/router'
+import { notFound, useParams, useRouter } from 'next/navigation'
+
 import React, { use } from 'react'
 
 const DynamicExplorePage = () => {
@@ -14,11 +16,14 @@ const DynamicExplorePage = () => {
   const slug = params.slug
 
 
-  console.log(params);
+  //console.log(params);
 
   //check valid category
   const categoryInfo = CATEGORIES.find((cat) => cat.id === slug);
   const isCategory = !!categoryInfo;
+
+  console.log(categoryInfo);
+
 
   //validate location
   const { city, state, isValid } = !isCategory ? parseLocationSlug(slug) : { city: null, state: null, isValid: false };
@@ -37,17 +42,58 @@ const DynamicExplorePage = () => {
         : "skip"
   );
 
-  const handleEventClick = (eventSlug) => { 
+  const handleEventClick = (eventSlug) => {
     router.push(`/events/${eventSlug}`);
   }
 
   if (isLoading) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <Loader2 className="animate-spin w-8 h-8 text-purple-500" />
-            </div>
-        );
-    }
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="animate-spin w-8 h-8 text-purple-500" />
+      </div>
+    );
+  }
+
+  if (isCategory) return (
+    <>
+      <div className="pb-5">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="text-6xl">{categoryInfo.icon}</div>
+          <div>
+            <h1 className="text-5xl md:text-6xl font-bold">
+              {categoryInfo.label}
+            </h1>
+            <p className="text-lg text-muted-foreground mt-2">
+              {categoryInfo.description}
+            </p>
+          </div>
+        </div>
+
+        {events && events.length > 0 && (
+          <p className="text-muted-foreground">
+            {events.length} event{events.length !== 1 ? "s" : ""} found
+          </p>
+        )}
+      </div>
+
+      {events && events.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {events.map((event) => (
+            <EventCard
+              key={event._id}
+              event={event}
+              onClick={() => handleEventClick(event.slug)}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="text-muted-foreground">
+          No events found in this category.
+        </p>
+      )}
+    </>
+  )
+
 
   return (
     <div>DynamicExplorePage</div>
