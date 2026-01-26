@@ -213,7 +213,7 @@ const ExplorePage = () => {
                                     <h3 className='font-semibold text-lg mb-1 group-hover:text-purple-400 transition-colors'>{category.label}</h3>
                                     <p className='text-sm text-muted-foreground'>
                                         {category.count} Event
-                                        {category.count === 1 ? '' : 's'}
+                                        {category.count === 1 ?'' : 's'}
                                     </p>
                                 </div>
 
