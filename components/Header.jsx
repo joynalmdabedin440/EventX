@@ -8,6 +8,7 @@ import { Authenticated, Unauthenticated } from 'convex/react'
 import { BarLoader } from 'react-spinners'
 import { useStoreUserEffect } from '@/hooks/use-store-user';
 import { Building, Plus, Ticket, User } from 'lucide-react';
+import { OnboardingModal } from './onboarding-modal';
 
 const Header = () => {
 
@@ -80,6 +81,7 @@ const Header = () => {
                         </Unauthenticated>
 
                     </div>
+                    <OnboardingModal/>
                 </div>
                 {/* Mobile search and location -below header */}
 
