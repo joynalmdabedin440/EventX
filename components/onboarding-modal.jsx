@@ -14,10 +14,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
+import { Progress } from "./ui/progress"
 
 export function OnboardingModal() {
 
-  const [step, setStep] = useState(1);
+    const [step, setStep] = useState(1);
+    
+    const progress = (step/2)*100;
+
   return (
     <Dialog>
       <form>
@@ -25,7 +29,10 @@ export function OnboardingModal() {
           <Button variant="outline">Open Dialog</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
+                  <DialogHeader>
+                      <div className="mb-4">
+                          <Progress value={progress} ></Progress>
+                      </div>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>
               Make changes to your profile here. Click save when you&apos;re
