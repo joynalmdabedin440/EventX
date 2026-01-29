@@ -27,14 +27,14 @@ export function OnboardingModal() {
         <Dialog>
             <form>
                 <DialogTrigger asChild>
-                    <Button variant="outline">Open Dialog</Button>
+                    <Button >Open Dialog</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                         <div className="mb-4">
                             <Progress value={progress} ></Progress>
                         </div>
-                        <DialogTitle>
+                        <DialogTitle className="flex items-center gap-2 text-2xl">
                             {
                                 step === 1 ? (<>
                                     <Heart className="w-6 h-6 text-purple-500" />
