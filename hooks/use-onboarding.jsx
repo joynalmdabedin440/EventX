@@ -1,3 +1,4 @@
+import { api } from "@/convex/_generated/api";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -7,5 +8,8 @@ export function useOnboarding() {
     const [showOnboarding, setShowOnboarding] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
+    
+    const { data: currentUser, isLoading } = useConvexQuery(api.users.getCurrentUser);
+    
     
 }
