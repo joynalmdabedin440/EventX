@@ -1,6 +1,6 @@
 import { api } from "@/convex/_generated/api";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Pages that require onboarding (attendee-centered)
 const ATTENDEE_PAGES = ["/explore", "/events", "/my-tickets", "/profile"];
@@ -11,5 +11,19 @@ export function useOnboarding() {
     
     const { data: currentUser, isLoading } = useConvexQuery(api.users.getCurrentUser);
     
-    
-}
+    useEffect(() => {
+    if (isLoading || !currentUser) return;
+
+    // Check if user hasn't completed onboarding
+    if (!currentUser.hasCompletedOnboarding) {
+      // Check if current page requires onboarding
+      const requiresOnboarding = ATTENDEE_PAGES.some((page) =>
+        pathname.startsWith(page)
+      );
+
+      if (requiresOnboarding) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setShowOnboarding(true);
+      }
+    }
+  }, [currentUser, pathname, isLoading]);
