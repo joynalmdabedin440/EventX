@@ -21,8 +21,19 @@ import { CATEGORIES } from "@/lib/data"
 export function OnboardingModal({isOpen, onClose,onComplete}) {
 
     const [step, setStep] = useState(1);
+    const [selectedInterests, setSelectedInterests] = useState([]);
+    const [location, setLocation] = useState({
+        city: '',
+        state: '',
+        country: ''
+    });
 
     const progress = (step / 2) * 100;
+
+    const toggleInterest = (categoryId) => {
+        // Logic to toggle interest selection
+     }
+
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -57,10 +68,10 @@ export function OnboardingModal({isOpen, onClose,onComplete}) {
                     {
                         step === 1 && (
                             <div className="space-y-6">
-                                <div className=" grid grid-cols-2 sm:grid-cols-3 max-h-[400px] overflow-y-auto p-2">
+                                <div className=" grid gap-3 grid-cols-2 sm:grid-cols-3 max-h-[400px] overflow-y-auto p-2">
                                     {
                                         CATEGORIES.map((category) => (
-                                            <button key={category.id}   >
+                                            <button key={category.id} onClick={()=>toggleInterest(category.id)} className={`p-4 rounded-lg border-2 transition-all hover:scale-105`} >
                                                 <div className="text-2xl mb-2">{category.icon}</div>
                                                 <div className="text-sm font-medium">{category.label}</div>
 
