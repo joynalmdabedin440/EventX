@@ -8,9 +8,9 @@ export function useOnboarding() {
     const [showOnboarding, setShowOnboarding] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
-    
+
     const { data: currentUser, isLoading } = useConvexQuery(api.users.getCurrentUser);
-    
+
     useEffect(() => {
         if (isLoading || !currentUser) return;
 
@@ -29,8 +29,21 @@ export function useOnboarding() {
     }, [currentUser, pathname, isLoading]);
 
     const handleOnboardingComplete = () => {
-    setShowOnboarding(false);
-    // Refresh to get updated user data
-    router.refresh();
-  };
+        setShowOnboarding(false);
+        // Refresh to get updated user data
+        router.refresh();
+    };
+    const handleOnboardingSkip = () => {
+        setShowOnboarding(false);
+        // Redirect back to homepage if they skip
+        router.push("/");
+    };
+
+    return {
+        showOnboarding,
+        setShowOnboarding,
+        handleOnboardingComplete,
+        handleOnboardingSkip,
+        needsOnboarding: currentUser && !currentUser.hasCompletedOnboarding,
+    };
 }
