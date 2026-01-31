@@ -12,18 +12,25 @@ export function useOnboarding() {
     const { data: currentUser, isLoading } = useConvexQuery(api.users.getCurrentUser);
     
     useEffect(() => {
-    if (isLoading || !currentUser) return;
+        if (isLoading || !currentUser) return;
 
-    // Check if user hasn't completed onboarding
-    if (!currentUser.hasCompletedOnboarding) {
-      // Check if current page requires onboarding
-      const requiresOnboarding = ATTENDEE_PAGES.some((page) =>
-        pathname.startsWith(page)
-      );
+        // Check if user hasn't completed onboarding
+        if (!currentUser.hasCompletedOnboarding) {
+            // Check if current page requires onboarding
+            const requiresOnboarding = ATTENDEE_PAGES.some((page) =>
+                pathname.startsWith(page)
+            );
 
-      if (requiresOnboarding) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setShowOnboarding(true);
-      }
-    }
-  }, [currentUser, pathname, isLoading]);
+            if (requiresOnboarding) {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
+                setShowOnboarding(true);
+            }
+        }
+    }, [currentUser, pathname, isLoading]);
+
+    const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    // Refresh to get updated user data
+    router.refresh();
+  };
+}
