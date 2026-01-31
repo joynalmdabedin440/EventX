@@ -29,9 +29,9 @@ export function OnboardingModal() {
                 <DialogTrigger asChild>
                     <Button >Open Dialog</Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[425px] bg-black/70 backdrop-blur-lg border border-white/10">
                     <DialogHeader>
-                        <div className="mb-4">
+                        <div className="mb-4  ">
                             <Progress value={progress} ></Progress>
                         </div>
                         <DialogTitle className="flex items-center gap-2 text-2xl">
