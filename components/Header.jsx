@@ -81,7 +81,7 @@ const Header = () => {
                         </Unauthenticated>
 
                     </div>
-                    <OnboardingModal/>
+                    
                 </div>
                 {/* Mobile search and location -below header */}
 
@@ -98,6 +98,7 @@ const Header = () => {
             </nav>
 
             {/* Modals */}
+            <OnboardingModal/>
         </>
     )
 }
