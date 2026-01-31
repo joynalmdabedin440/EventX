@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react";
 import { Progress } from "./ui/progress"
 import { Heart, MapPin } from "lucide-react"
+import { CATEGORIES } from "@/lib/data"
 
 export function OnboardingModal({isOpen, onClose,onComplete}) {
 
@@ -52,16 +53,29 @@ export function OnboardingModal({isOpen, onClose,onComplete}) {
                             : "We'll show you events happening near you"}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4">
-                    <div className="grid gap-3">
-                        <Label htmlFor="name-1">Name</Label>
-                        <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-                    </div>
-                    <div className="grid gap-3">
-                        <Label htmlFor="username-1">Username</Label>
-                        <Input id="username-1" name="username" defaultValue="@peduarte" />
-                    </div>
+                <div className="py-4">
+                    {
+                        step === 1 && (
+                            <div className="space-y-6">
+                                <div className=" grid grid-cols-2 sm:grid-cols-3 max-h-[400px] overflow-y-auto p-2">
+                                    {
+                                        CATEGORIES.map((category) => (
+                                            <button key={category.id}   >
+                                                <div className="text-2xl mb-2">{category.icon}</div>
+                                                <div className="text-sm font-medium">{category.label}</div>
+
+                                            </button>
+                                        ))
+                                    }
+
+                                </div>
+
+                            </div>
+                        )
+                    }
+
                 </div>
+               
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="outline">Cancel</Button>
