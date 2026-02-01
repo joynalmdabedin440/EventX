@@ -2,10 +2,11 @@ import { api } from '@/convex/_generated/api';
 import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query';
 import { useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
+import { City, State } from 'country-state-city';
 
 
 // HH:MM in 24h
@@ -49,26 +50,43 @@ const CreateEventPage = () => {
     );
 
     const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(eventSchema),
-    defaultValues: {
-      locationType: "physical",
-      ticketType: "free",
-      capacity: 50,
-      themeColor: "#1e3a8a",
-      category: "",
-      state: "",
-      city: "",
-      startTime: "",
-      endTime: "",
-    },
-  });
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        control,
+        formState: { errors },
+    } = useForm({
+        resolver: zodResolver(eventSchema),
+        defaultValues: {
+            locationType: "physical",
+            ticketType: "free",
+            capacity: 50,
+            themeColor: "#1e3a8a",
+            category: "",
+            state: "",
+            city: "",
+            startTime: "",
+            endTime: "",
+        },
+    });
+
+    const themeColor = watch("themeColor");
+    const ticketType = watch("ticketType");
+    const selectedState = watch("state");
+    const startDate = watch("startDate");
+    const endDate = watch("endDate");
+    const coverImage = watch("coverImage");
+
+    const indianStates = useMemo(() => State.getStatesOfCountry("IN"), []);
+
+    const cities = useMemo(() => {
+        if (!selectedState) return [];
+        const st = indianStates.find((s) => s.name === selectedState);
+        if (!st) return [];
+        return City.getCitiesOfState("IN", st.isoCode);
+    }, [selectedState, indianStates]);
+
 
 
     return (
