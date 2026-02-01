@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@clerk/nextjs";
 import { useConvexAuth } from "convex/react";
 import { useEffect, useState } from "react";
 import { useMutation } from "convex/react";
@@ -6,30 +6,17 @@ import { api } from "../convex/_generated/api";
 
 
 export function useStoreUserEffect() {
-  const [mounted, setMounted] = useState(false);
   const { isLoading, isAuthenticated } = useConvexAuth();
-  let user = null;
-  
-  try {
-    const userHook = useUser();
-    user = userHook?.user || null;
-  } catch (e) {
-    // useUser might fail if called during SSR
-  }
-  
+  const { user } = useUser();
   // When this state is set we know the server
   // has stored the user.
   const [userId, setUserId] = useState(null);
   const storeUser = useMutation(api.users.store);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  
   // Call the `storeUser` mutation function to store
   // the current user in the `users` table and return the `Id` value.
   useEffect(() => {
-    if (!mounted || !isAuthenticated) {
+    // If the user is not logged in don't do anything
+    if (!isAuthenticated) {
       return;
     }
     // Store the user in the database.
@@ -43,7 +30,7 @@ export function useStoreUserEffect() {
     return () => setUserId(null);
     // Make sure the effect reruns if the user logs in with
     // a different identity
-  }, [mounted, isAuthenticated, storeUser, user?.id]);
+  }, [isAuthenticated, storeUser, user?.id]);
   // Combine the local state with the state from context
   return {
     isLoading: isLoading || (isAuthenticated && userId === null),
