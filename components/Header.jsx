@@ -1,5 +1,5 @@
 "use client";
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignInButton, SignUpButton, useAuth, UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -7,10 +7,11 @@ import { Button } from './ui/button'
 import { Authenticated, Unauthenticated } from 'convex/react'
 import { BarLoader } from 'react-spinners'
 import { useStoreUserEffect } from '@/hooks/use-store-user';
-import { Building, Plus, Ticket, User } from 'lucide-react';
+import { Building, Crown, Plus, Ticket, User } from 'lucide-react';
 import { OnboardingModal } from './onboarding-modal';
 import { useOnboarding } from '@/hooks/use-onboarding';
 import SearchLocationBar from './search-location-bar';
+import { Badge } from './ui/badge';
 
 const Header = () => {
 
@@ -18,6 +19,9 @@ const Header = () => {
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
     const { showOnboarding, handleOnboardingComplete, handleOnboardingSkip } = useOnboarding();
+
+    const { has } = useAuth();
+    const hasPro = has?.({ plan: "pro" })
 
 
     return (
@@ -32,6 +36,12 @@ const Header = () => {
                             priority
                         />
                         {/* pro badge */}
+                        {hasPro && (
+                            <Badge className="bg-linear-to-r from-pink-500 to-orange-500 gap-1 text-white ml-3">
+                                <Crown className="w-3 h-3" />
+                                Pro
+                            </Badge>
+                        )}
                     </Link>
 
                     {/* Search and location desktop view */}
