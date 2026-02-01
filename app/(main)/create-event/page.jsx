@@ -1,6 +1,10 @@
 import React from 'react'
 import z from 'zod'
 
+
+// HH:MM in 24h
+const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
 const eventSchema = z.object({
     title: z.string().min(5, "Title must be at least 5 characters"),
     description: z.string().min(20, "Description must be at least 20 characters"),
