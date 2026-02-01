@@ -20,7 +20,7 @@ import { CATEGORIES } from "@/lib/data"
 import { Badge } from "./ui/badge"
 import { useConvexMutation } from "@/hooks/use-convex-query"
 import { api } from "@/convex/_generated/api"
-import { State } from "country-state-city"
+import { City, State } from "country-state-city"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 export function OnboardingModal({ isOpen, onClose, onComplete }) {
@@ -30,7 +30,7 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
     const [location, setLocation] = useState({
         city: '',
         state: '',
-        country: ''
+        country: 'IN'
     });
     // Get Indian states
     const indianStates = useMemo(() => {
@@ -191,24 +191,56 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
                                     </SelectContent>
                                 </Select>
                             </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="city">City</Label>
+                                <Select
+                                    value={location.city}
+                                    onValueChange={(value) =>
+                                        setLocation({ ...location, city: value })
+                                    }
+                                    disabled={!location.state}
+                                >
+                                    <SelectTrigger id="city" className="h-11 w-full">
+                                        <SelectValue
+                                            placeholder={
+                                                location.state ? "Select city" : "State first"
+                                            }
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {cities.length > 0 ? (
+                                            cities.map((city) => (
+                                                <SelectItem key={city.name} value={city.name}>
+                                                    {city.name}
+                                                </SelectItem>
+                                            ))
+                                        ) : (
+                                            <SelectItem value="no-cities" disabled>
+                                                No cities available
+                                            </SelectItem>
+                                        )}
+                                    </SelectContent>
+                                </Select>
+                           
                         </div>
+                    </div>
                     </div>)
 
 
                 }
 
-                <DialogFooter className={"flex gap-3"}>
-                    <Button className="flex-1 gap-2" disabled={isLoading} onClick={handleNext}
-                    >
-                        {
-                            isLoading ? "Completing..." : step === 2 ? "Complete Setup" : "Continue"
-                        }
-                        <ArrowRight className="w-4 h-4" />
-                    </Button>
+            <DialogFooter className={"flex gap-3"}>
+                <Button className="flex-1 gap-2" disabled={isLoading} onClick={handleNext}
+                >
+                    {
+                        isLoading ? "Completing..." : step === 2 ? "Complete Setup" : "Continue"
+                    }
+                    <ArrowRight className="w-4 h-4" />
+                </Button>
 
-                </DialogFooter>
-            </DialogContent>
+            </DialogFooter>
+        </DialogContent>
 
-        </Dialog>
+        </Dialog >
     )
 }
