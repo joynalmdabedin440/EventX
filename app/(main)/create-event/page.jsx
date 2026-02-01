@@ -3,7 +3,9 @@ import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query';
 import { useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
 import z from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 // HH:MM in 24h
@@ -45,6 +47,29 @@ const CreateEventPage = () => {
     const { mutate: createEvent, isLoading } = useConvexMutation(
         api.events.createEvent
     );
+
+    const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(eventSchema),
+    defaultValues: {
+      locationType: "physical",
+      ticketType: "free",
+      capacity: 50,
+      themeColor: "#1e3a8a",
+      category: "",
+      state: "",
+      city: "",
+      startTime: "",
+      endTime: "",
+    },
+  });
+
 
     return (
         <div>CreateEventPage</div>
