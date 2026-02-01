@@ -10,6 +10,7 @@ import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { City, State } from 'country-state-city';
 import UpgradeModal from '@/components/upgrade-modal';
+import Image from 'next/image';
 
 
 // HH:MM in 24h
@@ -117,7 +118,79 @@ const CreateEventPage = () => {
 
             <div className="max-w-6xl mx-auto grid md:grid-cols-[320px_1fr] gap-10">
                 {/* left image and theme */}
-                <div>let</div>
+                <div className="space-y-6">
+                    <div
+                        className="aspect-square w-full rounded-xl overflow-hidden flex items-center justify-center cursor-pointer border"
+                        onClick={() => setShowImagePicker(true)}
+                    >
+                        {coverImage ? (
+                            <Image
+                                src={coverImage}
+                                alt="Cover"
+                                className="w-full h-full object-cover"
+                                width={500} // Adjust width as needed
+                                height={500} // Adjust height as needed
+                                priority // Optional: prioritize loading this image
+                            />
+                        ) : (
+                            <span className="opacity-60 text-sm">
+                                Click to add cover image
+                            </span>
+                        )}
+                    </div>
+
+                    {/* <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                            <Label className="text-sm">Theme Color</Label>
+                            {!hasPro && (
+                                <Badge variant="secondary" className="text-xs gap-1">
+                                    <Sparkles className="w-3 h-3" />
+                                    Pro
+                                </Badge>
+                            )}
+                        </div>
+                        <div className="flex gap-2 flex-wrap">
+                            {colorPresets.map((color) => (
+                                <button
+                                    key={color}
+                                    type="button"
+                                    className={`w-10 h-10 rounded-full border-2 transition-all ${!hasPro && color !== "#1e3a8a"
+                                            ? "opacity-40 cursor-not-allowed"
+                                            : "hover:scale-110"
+                                        }`}
+                                    style={{
+                                        backgroundColor: color,
+                                        borderColor: themeColor === color ? "white" : "transparent",
+                                    }}
+                                    onClick={() => handleColorClick(color)}
+                                    title={
+                                        !hasPro && color !== "#1e3a8a"
+                                            ? "Upgrade to Pro for custom colors"
+                                            : ""
+                                    }
+                                />
+                            ))}
+                            {!hasPro && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setUpgradeReason("color");
+                                        setShowUpgradeModal(true);
+                                    }}
+                                    className="w-10 h-10 rounded-full border-2 border-dashed border-purple-300 flex items-center justify-center hover:border-purple-500 transition-colors"
+                                    title="Unlock more colors with Pro"
+                                >
+                                    <Sparkles className="w-5 h-5 text-purple-400" />
+                                </button>
+                            )}
+                        </div>
+                        {!hasPro && (
+                            <p className="text-xs text-muted-foreground">
+                                Upgrade to Pro to unlock custom theme colors
+                            </p>
+                        )}
+                    </div> */}
+                </div>
 
                 {/* right form */}
                 <div>right</div>
