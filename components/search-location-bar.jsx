@@ -48,7 +48,7 @@ export default function SearchLocationBar() {
       setSelectedState(currentUser.location.state || "");
       setSelectedCity(currentUser.location.city || "");
     }
-  }, [currentUser, isLoading]);
+  }, [currentUser]);
 
   function debounce(func, wait) {
     let timeout;
