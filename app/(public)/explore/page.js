@@ -61,7 +61,7 @@ const ExplorePage = () => {
     }
     const handleCategoryClick = (categoryId) => {
 
-        router.push(`/events/${categoryId}`);
+        router.push(`/explore/${categoryId}`);
 
     }
 

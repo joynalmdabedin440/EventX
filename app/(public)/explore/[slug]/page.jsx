@@ -23,7 +23,7 @@ const DynamicExplorePage = () => {
   const categoryInfo = CATEGORIES.find((cat) => cat.id === slug);
   const isCategory = !!categoryInfo;
 
-  console.log(categoryInfo);
+  
 
 
   //validate location
@@ -44,7 +44,7 @@ const DynamicExplorePage = () => {
   );
 
   const handleEventClick = (eventSlug) => {
-    router.push(`/events/${eventSlug}`);
+    router.push(`/explore/${eventSlug}`);
   }
 
   if (isLoading) {

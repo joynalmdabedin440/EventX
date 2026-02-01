@@ -15,13 +15,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useMemo, useState } from "react";
 import { Progress } from "./ui/progress"
-import { ArrowRight, Heart, MapPin } from "lucide-react"
+import { ArrowLeft, ArrowRight, Heart, MapPin } from "lucide-react"
 import { CATEGORIES } from "@/lib/data"
 import { Badge } from "./ui/badge"
 import { useConvexMutation } from "@/hooks/use-convex-query"
 import { api } from "@/convex/_generated/api"
 import { City, State } from "country-state-city"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { toast } from "sonner"
 
 export function OnboardingModal({ isOpen, onClose, onComplete }) {
 
@@ -87,7 +88,7 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
                 },
                 interests: selectedInterests,
             });
-            toast.success("Welcome to Spott! 🎉");
+            toast.success("Welcome to EventX! 🎉");
             onComplete();
         } catch (error) {
             toast.error("Failed to complete onboarding");
@@ -244,14 +245,30 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
                 }
 
                 <DialogFooter className={"flex gap-3"}>
-                    <Button className="flex-1 gap-2" disabled={isLoading} onClick={handleNext}
-                    >
-                        {
-                            isLoading ? "Completing..." : step === 2 ? "Complete Setup" : "Continue"
-                        }
-                        <ArrowRight className="w-4 h-4" />
-                    </Button>
-
+                    <div className="flex gap-3 pt-4">
+                        {step > 1 && (
+                            <Button
+                                variant="secondary"
+                                onClick={() => setStep(step - 1)}
+                                className="gap-2"
+                            >
+                                <ArrowLeft className="w-4 h-4" />
+                                Back
+                            </Button>
+                        )}
+                        <Button
+                            onClick={handleNext}
+                            disabled={isLoading}
+                            className="flex-1 gap-2"
+                        >
+                            {isLoading
+                                ? "Completing..."
+                                : step === 2
+                                    ? "Complete Setup"
+                                    : "Continue"}
+                            <ArrowRight className="w-4 h-4" />
+                        </Button>
+                    </div>
                 </DialogFooter>
             </DialogContent>
 
