@@ -13,11 +13,15 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Progress } from "./ui/progress"
-import { Heart, MapPin } from "lucide-react"
+import { ArrowRight, Heart, MapPin } from "lucide-react"
 import { CATEGORIES } from "@/lib/data"
 import { Badge } from "./ui/badge"
+import { useConvexMutation } from "@/hooks/use-convex-query"
+import { api } from "@/convex/_generated/api"
+import { State } from "country-state-city"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 export function OnboardingModal({ isOpen, onClose, onComplete }) {
 
@@ -28,6 +32,21 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
         state: '',
         country: ''
     });
+    // Get Indian states
+    const indianStates = useMemo(() => {
+        return State.getStatesOfCountry("IN");
+    }, []);
+
+    // Get cities based on selected state
+    const cities = useMemo(() => {
+        if (!location.state) return [];
+        const selectedState = indianStates.find((s) => s.name === location.state);
+        if (!selectedState) return [];
+        return City.getCitiesOfState("IN", selectedState.isoCode);
+    }, [location.state, indianStates]);
+
+
+
 
     const progress = (step / 2) * 100;
 
@@ -37,6 +56,43 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
                 ? prev.filter((id) => id !== categoryId)
                 : [...prev, categoryId]
         );
+    };
+
+    const { mutate: completeOnboarding, isLoading } = useConvexMutation(
+        api.users.completeOnboarding
+    )
+
+    const handleNext = () => {
+        if (step === 1 && selectedInterests.length < 3) {
+            toast.error("Please select at least 3 interests");
+            return;
+        }
+        if (step === 2 && (!location.city || !location.state)) {
+            toast.error("Please select both state and city");
+            return;
+        }
+        if (step < 2) {
+            setStep(step + 1);
+        } else {
+            handleComplete();
+        }
+    };
+    const handleComplete = async () => {
+        try {
+            await completeOnboarding({
+                location: {
+                    city: location.city,
+                    state: location.state,
+                    country: location.country,
+                },
+                interests: selectedInterests,
+            });
+            toast.success("Welcome to Spott! 🎉");
+            onComplete();
+        } catch (error) {
+            toast.error("Failed to complete onboarding");
+            console.error(error);
+        }
     };
 
 
@@ -111,11 +167,45 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
 
                 </div>
 
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
-                    </DialogClose>
-                    <Button type="submit">Save changes</Button>
+                {/* Step 2: Location */}
+                {step === 2 && (
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="state">State</Label>
+                                <Select
+                                    value={location.state}
+                                    onValueChange={(value) => {
+                                        setLocation({ ...location, state: value, city: "" });
+                                    }}
+                                >
+                                    <SelectTrigger id="state" className="h-11 w-full">
+                                        <SelectValue placeholder="Select state" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {indianStates.map((state) => (
+                                            <SelectItem key={state.isoCode} value={state.name}>
+                                                {state.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                    </div>)
+
+
+                }
+
+                <DialogFooter className={"flex gap-3"}>
+                    <Button className="flex-1 gap-2" disabled={isLoading} onClick={handleNext}
+                    >
+                        {
+                            isLoading ? "Completing..." : step === 2 ? "Complete Setup" : "Continue"
+                        }
+                        <ArrowRight className="w-4 h-4" />
+                    </Button>
+
                 </DialogFooter>
             </DialogContent>
 
