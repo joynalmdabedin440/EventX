@@ -10,6 +10,7 @@ import { useStoreUserEffect } from '@/hooks/use-store-user';
 import { Building, Plus, Ticket, User } from 'lucide-react';
 import { OnboardingModal } from './onboarding-modal';
 import { useOnboarding } from '@/hooks/use-onboarding';
+import SearchLocationBar from './search-location-bar';
 
 const Header = () => {
 
@@ -34,10 +35,15 @@ const Header = () => {
                     </Link>
 
                     {/* Search and location desktop view */}
+
+                    <div className='hidden md:flex flex-1 justify-center'>
+                        <SearchLocationBar />
+
+                    </div>
                     {/* Right side actions */}
                     <div className='flex items-center'>
 
-                        <Button variant={"ghost"} size="small" onClick={()=>setShowUpgradeModal(true)} className={"mr-2 "} >
+                        <Button variant={"ghost"} size="small" onClick={() => setShowUpgradeModal(true)} className={"mr-2 "} >
                             Pricing
                         </Button>
                         <Button variant={"ghost"} size="small" asChild className={"mr-2"} >
@@ -86,9 +92,16 @@ const Header = () => {
                         </Unauthenticated>
 
                     </div>
-                    
+
                 </div>
                 {/* Mobile search and location -below header */}
+
+                <div className=' md:hidden border-t px-3 py-2 '>
+                    <SearchLocationBar />
+
+                </div>
+
+
 
                 {/* loader */}
                 {
@@ -103,7 +116,7 @@ const Header = () => {
             </nav>
 
             {/* Modals */}
-            <OnboardingModal 
+            <OnboardingModal
                 isOpen={showOnboarding}
                 onComplete={handleOnboardingComplete}
                 onClose={handleOnboardingSkip}
