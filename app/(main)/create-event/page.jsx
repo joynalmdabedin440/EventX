@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { City, State } from 'country-state-city';
+import UpgradeModal from '@/components/upgrade-modal';
 
 
 // HH:MM in 24h
@@ -100,19 +101,36 @@ const CreateEventPage = () => {
 
     return (
         <div className="min-h-screen transition-colors duration-300 px-6 py-8 -mt-6 md:-mt-16 lg:-mt-5 lg:rounded-md" style={{ backgroundColor: themeColor }} >
-            
-             {/* Header */}
-      <div className="max-w-6xl mx-auto flex flex-col gap-5 md:flex-row justify-between mb-10">
-        <div>
-          <h1 className="text-4xl font-bold">Create Event</h1>
-          {!hasPro && (
-            <p className="text-sm text-muted-foreground mt-2">
-              Free: {currentUser?.freeEventsCreated || 0}/1 events created
-            </p>
-          )}
-        </div>
-        {/* <AIEventCreator onEventGenerated={handleAIGenerate} /> */}
-      </div>
+
+            {/* Header */}
+            <div className="max-w-6xl mx-auto flex flex-col gap-5 md:flex-row justify-between mb-10">
+                <div>
+                    <h1 className="text-4xl font-bold">Create Event</h1>
+                    {!hasPro && (
+                        <p className="text-sm text-muted-foreground mt-2">
+                            Free: {currentUser?.freeEventsCreated || 0}/1 events created
+                        </p>
+                    )}
+                </div>
+                {/* <AIEventCreator onEventGenerated={handleAIGenerate} /> */}
+            </div>
+
+            <div className="max-w-6xl mx-auto grid md:grid-cols-[320px_1fr] gap-10">
+                {/* left image and theme */}
+                <div>let</div>
+
+                {/* right form */}
+                <div>right</div>
+            </div>
+
+            {/* Unsplash Picker */}
+
+            {/* Upgrade Modal */}
+            <UpgradeModal
+                isOpen={showUpgradeModal}
+                onClose={() => setShowUpgradeModal(false)}
+                trigger={upgradeReason}
+            />
         </div>
     )
 }
