@@ -87,6 +87,13 @@ const CreateEventPage = () => {
         return City.getCitiesOfState("IN", st.isoCode);
     }, [selectedState, indianStates]);
 
+    // Color presets - show all for Pro, only default for Free
+    const colorPresets = [
+        "#1e3a8a", // Default color (always available)
+        ...(hasPro ? ["#4c1d95", "#065f46", "#92400e", "#7f1d1d", "#831843"] : []),
+    ];
+
+
 
 
     return (
