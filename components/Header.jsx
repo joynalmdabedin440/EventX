@@ -12,6 +12,7 @@ import { OnboardingModal } from './onboarding-modal';
 import { useOnboarding } from '@/hooks/use-onboarding';
 import SearchLocationBar from './search-location-bar';
 import { Badge } from './ui/badge';
+import UpgradeModal from './upgrade-modal';
 
 const Header = () => {
 
@@ -53,9 +54,12 @@ const Header = () => {
                     {/* Right side actions */}
                     <div className='flex items-center'>
 
-                        <Button variant={"ghost"} size="small" onClick={() => setShowUpgradeModal(true)} className={"mr-2 "} >
-                            Pricing
-                        </Button>
+                        {
+                            !hasPro &&
+                            (<Button variant={"ghost"} size="small" onClick={() => setShowUpgradeModal(true)} className={"mr-2 "} >
+                                Pricing
+                            </Button>)
+                        }
                         <Button variant={"ghost"} size="small" asChild className={"mr-2"} >
                             <Link href="/explore">Explore</Link>
                         </Button>
@@ -130,6 +134,12 @@ const Header = () => {
                 isOpen={showOnboarding}
                 onComplete={handleOnboardingComplete}
                 onClose={handleOnboardingSkip}
+            />
+
+            <UpgradeModal
+                isOpen={showUpgradeModal}
+                onClose={() => setShowUpgradeModal(false)}
+                trigger = "header"
             />
         </>
     )
