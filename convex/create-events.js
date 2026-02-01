@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 // Create a new event
 export const createEvent = mutation({
@@ -85,6 +85,21 @@ export const getEventBySlug = query({
       .unique();
 
     return event;
+  },
+});
+
+// Get events by organizer
+export const getMyEvents = query({
+  handler: async (ctx) => {
+    const user = await ctx.runQuery(internal.users.getCurrentUser);
+
+    const events = await ctx.db
+      .query("events")
+      .withIndex("by_organizer", (q) => q.eq("organizerId", user._id))
+      .order("desc")
+      .collect();
+
+    return events;
   },
 });
 
