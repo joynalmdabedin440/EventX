@@ -221,25 +221,39 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
                                         )}
                                     </SelectContent>
                                 </Select>
-                           
+
+                            </div>
                         </div>
-                    </div>
+                        {/* shows selected city and location */}
+                        {location.city && location.state && (
+                            <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                                <div className="flex items-start gap-3">
+                                    <MapPin className="w-5 h-5 text-purple-500 mt-0.5" />
+                                    <div>
+                                        <p className="font-medium">Your location</p>
+                                        <p className="text-sm text-muted-foreground">
+                                            {location.city}, {location.state}, {location.country}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>)
 
 
                 }
 
-            <DialogFooter className={"flex gap-3"}>
-                <Button className="flex-1 gap-2" disabled={isLoading} onClick={handleNext}
-                >
-                    {
-                        isLoading ? "Completing..." : step === 2 ? "Complete Setup" : "Continue"
-                    }
-                    <ArrowRight className="w-4 h-4" />
-                </Button>
+                <DialogFooter className={"flex gap-3"}>
+                    <Button className="flex-1 gap-2" disabled={isLoading} onClick={handleNext}
+                    >
+                        {
+                            isLoading ? "Completing..." : step === 2 ? "Complete Setup" : "Continue"
+                        }
+                        <ArrowRight className="w-4 h-4" />
+                    </Button>
 
-            </DialogFooter>
-        </DialogContent>
+                </DialogFooter>
+            </DialogContent>
 
         </Dialog >
     )
