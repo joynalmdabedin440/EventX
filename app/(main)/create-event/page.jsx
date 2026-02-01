@@ -1,4 +1,8 @@
-import React from 'react'
+import { api } from '@/convex/_generated/api';
+import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query';
+import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
 import z from 'zod'
 
 
@@ -26,10 +30,25 @@ const eventSchema = z.object({
 });
 
 
-const CreateEvent = () => {
+const CreateEventPage = () => {
+
+    const router = useRouter();
+    const [showImagePicker, setShowImagePicker] = useState(false);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+    const [upgradeReason, setUpgradeReason] = useState("limit"); // "limit" or "color"
+
+    // Check if user has Pro plan
+    const { has } = useAuth();
+    const hasPro = has?.({ plan: "pro" });
+
+    const { data: currentUser } = useConvexQuery(api.users.getCurrentUser);
+    const { mutate: createEvent, isLoading } = useConvexMutation(
+        api.events.createEvent
+    );
+
     return (
-        <div>CreateEvent</div>
+        <div>CreateEventPage</div>
     )
 }
 
-export default CreateEvent
+export default CreateEventPage
