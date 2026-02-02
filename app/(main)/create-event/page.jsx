@@ -476,15 +476,20 @@ const CreateEventPage = () => {
                         )}
                     </div>
 
-
-
-
-
-
-
-
-
-
+                    {/* Submit */}
+                    <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full py-6 text-lg rounded-xl"
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Creating...
+                            </>
+                        ) : (
+                            "Create Event"
+                        )}
+                    </Button>
 
                 </form>
             </div>
