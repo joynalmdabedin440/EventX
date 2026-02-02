@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function UnsplashImagePicker({ isOpen, onClose, onSelect }) {
-  const [query, setQuery] = useState("event");
+  const [query, setQuery] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +39,7 @@ export default function UnsplashImagePicker({ isOpen, onClose, onSelect }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-hidden flex flex-col bg-black">
         <DialogHeader>
           <DialogTitle>Choose Cover Image</DialogTitle>
         </DialogHeader>

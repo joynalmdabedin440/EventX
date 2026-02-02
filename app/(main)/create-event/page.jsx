@@ -140,7 +140,7 @@ const CreateEventPage = () => {
                         )}
                     </div>
 
-                    {/* <div className="space-y-2">
+                    <div className="space-y-2">
                         <div className="flex items-center justify-between">
                             <Label className="text-sm">Theme Color</Label>
                             {!hasPro && (
@@ -190,7 +190,7 @@ const CreateEventPage = () => {
                                 Upgrade to Pro to unlock custom theme colors
                             </p>
                         )}
-                    </div> */}
+                    </div>
                 </div>
 
                 {/* right form */}
