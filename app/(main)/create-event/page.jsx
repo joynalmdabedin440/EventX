@@ -240,8 +240,8 @@ const CreateEventPage = () => {
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
-                                            variant="outline"
-                                            className="w-full justify-between"
+                                            
+                                            className="w-full justify-between bg-transparent border border-input hover:bg-accent hover:text-accent-foreground"
                                         >
                                             {startDate ? format(startDate, "PPP") : "Pick date"}
                                             <CalendarIcon className="w-4 h-4 opacity-60" />
@@ -269,14 +269,14 @@ const CreateEventPage = () => {
                         </div>
 
                         {/* End */}
-                        {/* <div className="space-y-2">
+                        <div className="space-y-2">
                             <Label className="text-sm">End</Label>
                             <div className="grid grid-cols-[1fr_auto] gap-2">
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
-                                            variant="outline"
-                                            className="w-full justify-between"
+                                            
+                                            className="w-full justify-between bg-transparent border border-input hover:bg-accent hover:text-accent-foreground"
                                         >
                                             {endDate ? format(endDate, "PPP") : "Pick date"}
                                             <CalendarIcon className="w-4 h-4 opacity-60" />
@@ -302,7 +302,7 @@ const CreateEventPage = () => {
                                     {errors.endDate?.message || errors.endTime?.message}
                                 </p>
                             )}
-                        </div> */}
+                        </div>
                     </div>
 
 
