@@ -15,6 +15,7 @@ import UnsplashImagePicker from '@/components/unsplash-image-picker';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 
 // HH:MM in 24h
@@ -111,6 +112,7 @@ const CreateEventPage = () => {
         setValue("themeColor", color);
     };
 
+    const onSubmit = async (data) => { }
 
 
 
@@ -210,7 +212,23 @@ const CreateEventPage = () => {
                 </div>
 
                 {/* right form */}
-                <div>right</div>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+
+                    {/* Title */}
+                    <div>
+                        <Input
+                            {...register("title")}
+                            placeholder="Event Name"
+                            className="text-3xl font-semibold bg-transparent border-none focus-visible:ring-0"
+                        />
+                        {errors.title && (
+                            <p className="text-sm text-red-400 mt-1">
+                                {errors.title.message}
+                            </p>
+                        )}
+                    </div>
+
+                </form>
             </div>
 
             {/* Unsplash Picker */}
