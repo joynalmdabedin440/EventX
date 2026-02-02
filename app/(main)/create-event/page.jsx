@@ -342,6 +342,36 @@ const CreateEventPage = () => {
                         )}
                     </div>
 
+                       {/* Location */}
+          <div className="space-y-3">
+            <Label className="text-sm">Location</Label>
+            <div className="grid grid-cols-2 gap-4">
+              <Controller
+                control={control}
+                name="state"
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    onValueChange={(val) => {
+                      field.onChange(val);
+                      setValue("city", "");
+                    }}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {indianStates.map((s) => (
+                        <SelectItem key={s.isoCode} value={s.name}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+
+
                 </form>
             </div>
 
