@@ -8,6 +8,7 @@ import React, { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from 'date-fns';
 import { City, State } from 'country-state-city';
 import UpgradeModal from '@/components/upgrade-modal';
 import Image from 'next/image';
@@ -113,6 +114,14 @@ const CreateEventPage = () => {
             return;
         }
         setValue("themeColor", color);
+    };
+
+    const combineDateTime = (date, time) => {
+        if (!date || !time) return null;
+        const [hh, mm] = time.split(":").map(Number);
+        const d = new Date(date);
+        d.setHours(hh, mm, 0, 0);
+        return d;
     };
 
     const onSubmit = async (data) => { }
@@ -240,7 +249,7 @@ const CreateEventPage = () => {
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
-                                            
+
                                             className="w-full justify-between bg-transparent border border-input hover:bg-accent hover:text-accent-foreground"
                                         >
                                             {startDate ? format(startDate, "PPP") : "Pick date"}
@@ -275,7 +284,7 @@ const CreateEventPage = () => {
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
-                                            
+
                                             className="w-full justify-between bg-transparent border border-input hover:bg-accent hover:text-accent-foreground"
                                         >
                                             {endDate ? format(endDate, "PPP") : "Pick date"}
