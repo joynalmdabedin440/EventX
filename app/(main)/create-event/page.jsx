@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CATEGORIES } from '@/lib/data';
+import { Textarea } from '@/components/ui/textarea';
 
 
 // HH:MM in 24h
@@ -416,6 +417,21 @@ const CreateEventPage = () => {
                                 {...register("address")}
                                 placeholder="Full address / street / building (optional)"
                             />
+                        </div>
+
+                        {/* Description */}
+                        <div className="space-y-2">
+                            <Label>Description</Label>
+                            <Textarea
+                                {...register("description")}
+                                placeholder="Tell people about your event..."
+                                rows={4}
+                            />
+                            {errors.description && (
+                                <p className="text-sm text-red-400">
+                                    {errors.description.message}
+                                </p>
+                            )}
                         </div>
 
 
