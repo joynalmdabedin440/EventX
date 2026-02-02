@@ -463,6 +463,20 @@ const CreateEventPage = () => {
                         )}
                     </div>
 
+                    {/* Capacity */}
+                    <div className="space-y-2">
+                        <Label className="text-sm">Capacity</Label>
+                        <Input
+                            type="number"
+                            {...register("capacity", { valueAsNumber: true })}
+                            placeholder="Ex: 100"
+                        />
+                        {errors.capacity && (
+                            <p className="text-sm text-red-400">{errors.capacity.message}</p>
+                        )}
+                    </div>
+
+
 
 
 
