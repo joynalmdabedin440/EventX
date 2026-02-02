@@ -342,60 +342,85 @@ const CreateEventPage = () => {
                         )}
                     </div>
 
-                    <Label className="text-sm">Location</Label>
-                    <div className="grid grid-cols-2 gap-4">
-                        <Controller
-                            control={control}
-                            name="state"
-                            render={({ field }) => (
-                                <Select
-                                    value={field.value}
-                                    onValueChange={(val) => {
-                                        field.onChange(val);
-                                        setValue("city", "");
-                                    }}
-                                >
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select state" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {indianStates.map((s) => (
-                                            <SelectItem key={s.isoCode} value={s.name}>
-                                                {s.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            )}
-                        />
+                    {/* Location */}
+                    <div className="space-y-3">
+                        <Label className="text-sm">Location</Label>
+                        <div className="grid grid-cols-2 gap-4">
+                            <Controller
+                                control={control}
+                                name="state"
+                                render={({ field }) => (
+                                    <Select
+                                        value={field.value}
+                                        onValueChange={(val) => {
+                                            field.onChange(val);
+                                            setValue("city", "");
+                                        }}
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select state" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {indianStates.map((s) => (
+                                                <SelectItem key={s.isoCode} value={s.name}>
+                                                    {s.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
 
-                        <Controller
-                            control={control}
-                            name="city"
-                            render={({ field }) => (
-                                <Select
-                                    value={field.value}
-                                    onValueChange={field.onChange}
-                                    disabled={!selectedState}
-                                >
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue
-                                            placeholder={
-                                                selectedState ? "Select city" : "Select state first"
-                                            }
-                                        />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {cities.map((c) => (
-                                            <SelectItem key={c.name} value={c.name}>
-                                                {c.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                            <Controller
+                                control={control}
+                                name="city"
+                                render={({ field }) => (
+                                    <Select
+                                        value={field.value}
+                                        onValueChange={field.onChange}
+                                        disabled={!selectedState}
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue
+                                                placeholder={
+                                                    selectedState ? "Select city" : "Select state first"
+                                                }
+                                            />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {cities.map((c) => (
+                                                <SelectItem key={c.name} value={c.name}>
+                                                    {c.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                        </div >
+
+                        {/* venue */}
+                        <div className="space-y-2 mt-6">
+                            <Label className="text-sm">Venue Details</Label>
+
+                            <Input
+                                {...register("venue")}
+                                placeholder="Venue link (Google Maps Link)"
+                                type="url"
+                            />
+                            {errors.venue && (
+                                <p className="text-sm text-red-400">{errors.venue.message}</p>
                             )}
-                        />
-                    </div >
+
+                            <Input
+                                {...register("address")}
+                                placeholder="Full address / street / building (optional)"
+                            />
+                        </div>
+
+
+                    </div>
+
 
 
 
