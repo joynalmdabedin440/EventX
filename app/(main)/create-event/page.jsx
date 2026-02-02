@@ -12,6 +12,9 @@ import { City, State } from 'country-state-city';
 import UpgradeModal from '@/components/upgrade-modal';
 import Image from 'next/image';
 import UnsplashImagePicker from '@/components/unsplash-image-picker';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Sparkles } from 'lucide-react';
 
 
 // HH:MM in 24h
@@ -98,6 +101,17 @@ const CreateEventPage = () => {
         ...(hasPro ? ["#4c1d95", "#065f46", "#92400e", "#7f1d1d", "#831843"] : []),
     ];
 
+    const handleColorClick = (color) => {
+        // If not default color and user doesn't have Pro
+        if (color !== "#1e3a8a" && !hasPro) {
+            setUpgradeReason("color");
+            setShowUpgradeModal(true);
+            return;
+        }
+        setValue("themeColor", color);
+    };
+
+
 
 
 
@@ -140,6 +154,8 @@ const CreateEventPage = () => {
                         )}
                     </div>
 
+                    {/* color picker for pro user */}
+
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
                             <Label className="text-sm">Theme Color</Label>
@@ -156,8 +172,8 @@ const CreateEventPage = () => {
                                     key={color}
                                     type="button"
                                     className={`w-10 h-10 rounded-full border-2 transition-all ${!hasPro && color !== "#1e3a8a"
-                                            ? "opacity-40 cursor-not-allowed"
-                                            : "hover:scale-110"
+                                        ? "opacity-40 cursor-not-allowed"
+                                        : "hover:scale-110"
                                         }`}
                                     style={{
                                         backgroundColor: color,
@@ -198,16 +214,16 @@ const CreateEventPage = () => {
             </div>
 
             {/* Unsplash Picker */}
-             {showImagePicker && (
-        <UnsplashImagePicker
-          isOpen={showImagePicker}
-          onClose={() => setShowImagePicker(false)}
-          onSelect={(url) => {
-            setValue("coverImage", url);
-            setShowImagePicker(false);
-          }}
-        />
-      )}
+            {showImagePicker && (
+                <UnsplashImagePicker
+                    isOpen={showImagePicker}
+                    onClose={() => setShowImagePicker(false)}
+                    onSelect={(url) => {
+                        setValue("coverImage", url);
+                        setShowImagePicker(false);
+                    }}
+                />
+            )}
 
             {/* Upgrade Modal */}
             <UpgradeModal
