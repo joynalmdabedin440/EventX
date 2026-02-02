@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { City, State } from 'country-state-city';
 import UpgradeModal from '@/components/upgrade-modal';
 import Image from 'next/image';
+import UnsplashImagePicker from '@/components/unsplash-image-picker';
 
 
 // HH:MM in 24h
@@ -197,6 +198,16 @@ const CreateEventPage = () => {
             </div>
 
             {/* Unsplash Picker */}
+             {showImagePicker && (
+        <UnsplashImagePicker
+          isOpen={showImagePicker}
+          onClose={() => setShowImagePicker(false)}
+          onSelect={(url) => {
+            setValue("coverImage", url);
+            setShowImagePicker(false);
+          }}
+        />
+      )}
 
             {/* Upgrade Modal */}
             <UpgradeModal

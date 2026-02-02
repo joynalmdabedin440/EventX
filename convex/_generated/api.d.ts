@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as create_events from "../create_events.js";
 import type * as events from "../events.js";
 import type * as search from "../search.js";
 import type * as seed from "../seed.js";
@@ -20,6 +21,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  create_events: typeof create_events;
   events: typeof events;
   search: typeof search;
   seed: typeof seed;
