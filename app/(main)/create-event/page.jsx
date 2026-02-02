@@ -5,7 +5,7 @@ import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query';
 import { useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from 'date-fns';
@@ -20,6 +20,8 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CATEGORIES } from '@/lib/data';
 
 
 // HH:MM in 24h
@@ -314,10 +316,31 @@ const CreateEventPage = () => {
                         </div>
                     </div>
 
-
-
-
-
+                    {/* Category */}
+                    <div className="space-y-2">
+                        <Label className="text-sm">Category</Label>
+                        <Controller
+                            control={control}
+                            name="category"
+                            render={({ field }) => (
+                                <Select value={field.value} onValueChange={field.onChange}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {CATEGORIES.map((cat) => (
+                                            <SelectItem key={cat.id} value={cat.id}>
+                                                {cat.icon} {cat.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {errors.category && (
+                            <p className="text-sm text-red-400">{errors.category.message}</p>
+                        )}
+                    </div>
 
                 </form>
             </div>
