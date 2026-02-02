@@ -419,22 +419,48 @@ const CreateEventPage = () => {
                             />
                         </div>
 
-                        {/* Description */}
-                        <div className="space-y-2">
-                            <Label>Description</Label>
-                            <Textarea
-                                {...register("description")}
-                                placeholder="Tell people about your event..."
-                                rows={4}
-                            />
-                            {errors.description && (
-                                <p className="text-sm text-red-400">
-                                    {errors.description.message}
-                                </p>
-                            )}
+                    </div>
+                    {/* Description */}
+                    <div className="space-y-2">
+                        <Label>Description</Label>
+                        <Textarea
+                            {...register("description")}
+                            placeholder="Tell people about your event..."
+                            rows={4}
+                        />
+                        {errors.description && (
+                            <p className="text-sm text-red-400">
+                                {errors.description.message}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Ticketing */}
+                    <div className="space-y-3">
+                        <Label className="text-sm">Tickets</Label>
+                        <div className="flex items-center gap-6">
+                            <label className="flex items-center gap-2">
+                                <input
+                                    type="radio"
+                                    value="free"
+                                    {...register("ticketType")}
+                                    defaultChecked
+                                />{" "}
+                                Free
+                            </label>
+                            <label className="flex items-center gap-2">
+                                <input type="radio" value="paid" {...register("ticketType")} />{" "}
+                                Paid
+                            </label>
                         </div>
 
-
+                        {ticketType === "paid" && (
+                            <Input
+                                type="number"
+                                placeholder="Ticket price ₹"
+                                {...register("ticketPrice", { valueAsNumber: true })}
+                            />
+                        )}
                     </div>
 
 
