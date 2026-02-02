@@ -14,8 +14,11 @@ import Image from 'next/image';
 import UnsplashImagePicker from '@/components/unsplash-image-picker';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles } from 'lucide-react';
+import { CalendarIcon, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 
 
 // HH:MM in 24h
@@ -219,7 +222,7 @@ const CreateEventPage = () => {
                         <Input
                             {...register("title")}
                             placeholder="Event Name"
-                            className="text-3xl font-semibold bg-transparent border-none focus-visible:ring-0"
+                            className="text-3xl font-semibold bg-transparent border focus-visible:ring-0"
                         />
                         {errors.title && (
                             <p className="text-sm text-red-400 mt-1">
@@ -227,6 +230,85 @@ const CreateEventPage = () => {
                             </p>
                         )}
                     </div>
+
+                    {/* Date + Time */}
+                    <div className="grid grid-cols-2 gap-6">
+                        {/* Start */}
+                        <div className="space-y-2">
+                            <Label className="text-sm">Start</Label>
+                            <div className="grid grid-cols-[1fr_auto] gap-2">
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full justify-between"
+                                        >
+                                            {startDate ? format(startDate, "PPP") : "Pick date"}
+                                            <CalendarIcon className="w-4 h-4 opacity-60" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="p-0">
+                                        <Calendar
+                                            mode="single"
+                                            selected={startDate}
+                                            onSelect={(date) => setValue("startDate", date)}
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <Input
+                                    type="time"
+                                    {...register("startTime")}
+                                    placeholder="hh:mm"
+                                />
+                            </div>
+                            {(errors.startDate || errors.startTime) && (
+                                <p className="text-sm text-red-400">
+                                    {errors.startDate?.message || errors.startTime?.message}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* End */}
+                        {/* <div className="space-y-2">
+                            <Label className="text-sm">End</Label>
+                            <div className="grid grid-cols-[1fr_auto] gap-2">
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full justify-between"
+                                        >
+                                            {endDate ? format(endDate, "PPP") : "Pick date"}
+                                            <CalendarIcon className="w-4 h-4 opacity-60" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="p-0">
+                                        <Calendar
+                                            mode="single"
+                                            selected={endDate}
+                                            onSelect={(date) => setValue("endDate", date)}
+                                            disabled={(date) => date < (startDate || new Date())}
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <Input
+                                    type="time"
+                                    {...register("endTime")}
+                                    placeholder="hh:mm"
+                                />
+                            </div>
+                            {(errors.endDate || errors.endTime) && (
+                                <p className="text-sm text-red-400">
+                                    {errors.endDate?.message || errors.endTime?.message}
+                                </p>
+                            )}
+                        </div> */}
+                    </div>
+
+
+
+
+
 
                 </form>
             </div>
