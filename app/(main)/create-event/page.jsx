@@ -15,7 +15,7 @@ import Image from 'next/image';
 import UnsplashImagePicker from '@/components/unsplash-image-picker';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, Sparkles } from 'lucide-react';
+import { CalendarIcon, Loader2, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CATEGORIES } from '@/lib/data';
 import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
 
 
 // HH:MM in 24h
@@ -142,7 +143,7 @@ const CreateEventPage = () => {
             }
 
             // Check event limit for Free users
-            if (!hasPro && currentUser?.freeEventsCreated >= 1) {
+            if (!hasPro && currentUser?.freeEventsCreated >= 3) {
                 setUpgradeReason("limit");
                 setShowUpgradeModal(true);
                 return;
@@ -174,7 +175,7 @@ const CreateEventPage = () => {
                 ticketPrice: data.ticketPrice || undefined,
                 coverImage: data.coverImage || undefined,
                 themeColor: data.themeColor,
-                hasPro,
+                
             });
 
             toast.success("Event created successfully! 🎉");
