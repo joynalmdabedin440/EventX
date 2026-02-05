@@ -344,6 +344,14 @@ const EventPage = () => {
 
 
             {/* register modal */}
+            {/* Register Modal */}
+            {showRegisterModal && (
+                <RegisterModal
+                    event={event}
+                    isOpen={showRegisterModal}
+                    onClose={() => setShowRegisterModal(false)}
+                />
+            )}
 
 
         </div>
