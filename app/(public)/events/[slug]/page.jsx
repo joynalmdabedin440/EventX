@@ -8,6 +8,7 @@ import { useUser } from '@clerk/nextjs';
 import { Calendar, Clock, Loader2 } from 'lucide-react';
 import { notFound, useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import Image from 'next/image';
 
 
 const EventPage = () => {
@@ -69,7 +70,22 @@ const EventPage = () => {
                         </div>
                     </div>
                 </div>
+
+
+                {/* Hero Image */}
+                {event.coverImage && (
+                    <div className="relative h-[250px] md:h-[400px] rounded-2xl overflow-hidden mb-6 ">
+                        <Image
+                            src={event.coverImage}
+                            alt={event.title}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                    </div>
+                )}
             </div>
+
 
 
             {/* register modal */}
