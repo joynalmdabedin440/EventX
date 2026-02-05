@@ -172,7 +172,7 @@ export default function EventDashboardPage() {
           <div className="flex-1">
             <h1 className="text-3xl font-bold mb-3">{event.title}</h1>
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <Badge variant="outline">
+              <Badge className="border border-gray-200" >
                 {getCategoryIcon(event.category)}{" "}
                 {getCategoryLabel(event.category)}
               </Badge>
@@ -193,20 +193,20 @@ export default function EventDashboardPage() {
 
           <div className="flex gap-2 w-full sm:w-auto">
             <Button
-              variant="outline"
+              
               size="sm"
               onClick={() => router.push(`/events/${event.slug}`)}
-              className="gap-2 flex-1"
+              className="gap-2 flex-1 border hover:scale-105"
             >
               <Eye className="w-4 h-4" />
               View
             </Button>
             <Button
-              variant="outline"
+              
               size="sm"
               onClick={handleDelete}
               disabled={isDeleting}
-              className="text-red-500 hover:text-red-600 gap-2 flex-1"
+              className="text-red-500 hover:text-red-600 gap-2 flex-1 border hover:scale-105"
             >
               <Trash2 className="w-4 h-4" />
               {isDeleting ? "Deleting..." : "Delete"}
