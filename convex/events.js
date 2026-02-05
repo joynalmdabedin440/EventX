@@ -1,133 +1,6 @@
-import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
-
-
-export const getFeaturedEvents = query({
-  args: {
-    limit: v.optional(v.number()),
-  },
-  handler: async (ctx, args) => {
-    const now = Date.now();
-
-    const events = await ctx.db
-      .query("events")
-      .withIndex("by_start_date")
-      .filter((q) => q.gte(q.field("startDate"), now))
-      .order("desc")
-      .collect()
-    
-    //sort by registration count for featured
-    const featured = events
-      .sort((a, b) => b.registrationCount - a.registrationCount)
-      .slice(0, args.limit ?? 3);
-    
-    return featured;
-
-  }
-});
-
-// get events by location (city and state)
-
-export const getEventsByLocation = query({
-  args: {
-    city: v.optional(v.string()),
-    state: v.optional(v.string()),
-    limit: v.optional(v.number())
-  },
-  handler: async (ctx, args) => {
-    const now = Date.now();
-
-    let events = await ctx.db
-      .query("events")
-      .withIndex("by_start_date")
-      .filter((q) => q.gte(q.field("startDate"), now))
-      .collect();
-    
-    //filter by city and state
-
-    if (args.city) {
-      events = events.filter(
-        (event) => event.city.toLowerCase() === args.city.toLowerCase()
-      )
-    }
-    else if (args.state) {
-      events = events.filter(
-        (event) => event.state?.toLowerCase() === args.state.toLowerCase()
-      )
-    }
-
-    return events.slice(0, args.limit ?? 4);
-    
-  },
-
-
-});
-
-// get popular events by registration count
-
-export const getPopularEvents = query({
-  args: {
-    limit: v.optional(v.number()),
-  },
-
-  handler: async (ctx, args) => {
-    const now = Date.now();
-
-    const events = await ctx.db
-      .query("events")
-      .withIndex("by_start_date")
-      .filter((q) => q.gte(q.field("startDate"), now))
-      .collect();
-    
-    // sort by registration count 
-    const popular = events
-      .sort((a, b) => b.registrationCount - a.registrationCount)
-      .slice(0, args.limit ?? 6);
-    
-    return popular;
-
-    
-  },
-})
-
-// Get events by category with pagination
-export const getEventsByCategory = query({
-  args: {
-    category: v.string(),
-    limit: v.optional(v.number()),
-  },
-  handler: async (ctx, args) => {
-    const now = Date.now();
-    const events = await ctx.db
-      .query("events")
-      .withIndex("by_category", (q) => q.eq("category", args.category))
-      .filter((q) => q.gte(q.field("startDate"), now))
-      .collect();
-
-    return events.slice(0, args.limit ?? 12);
-  },
-});
-
-// Get event counts by category
-export const getCategoryCounts = query({
-  handler: async (ctx) => {
-    const now = Date.now();
-    const events = await ctx.db
-      .query("events")
-      .withIndex("by_start_date")
-      .filter((q) => q.gte(q.field("startDate"), now))
-      .collect();
-
-    // Count events by category
-    const counts = {};
-    events.forEach((event) => {
-      counts[event.category] = (counts[event.category] || 0) + 1;
-    });
-
-    return counts;
-  },
-});
 
 // Create a new event
 export const createEvent = mutation({
@@ -150,29 +23,18 @@ export const createEvent = mutation({
     ticketPrice: v.optional(v.number()),
     coverImage: v.optional(v.string()),
     themeColor: v.optional(v.string()),
-    hasPro: v.optional(v.boolean()),
+
   },
   handler: async (ctx, args) => {
     try {
       const user = await ctx.runQuery(internal.users.getCurrentUser);
 
-      // SERVER-SIDE CHECK: Verify event limit for Free users
-      if (!args.hasPro && user?.freeEventsCreated >= 1) {
-        throw new Error(
-          "Free event limit reached. Please upgrade to Pro to create more events."
-        );
-      }
 
-      // SERVER-SIDE CHECK: Verify custom color usage
-      const defaultColor = "#1e3a8a";
-      if (!args.hasPro && args.themeColor && args.themeColor !== defaultColor) {
-        throw new Error(
-          "Custom theme colors are a Pro feature. Please upgrade to Pro."
-        );
-      }
+
+
 
       // Force default color for Free users
-      const themeColor = args.hasPro ? args.themeColor : defaultColor;
+      const themeColor = args.themeColor;
 
       // Generate slug from title
       const slug = args.title
@@ -182,24 +44,8 @@ export const createEvent = mutation({
 
       // Create event
       const eventId = await ctx.db.insert("events", {
-        title: args.title,
-        description: args.description,
-        category: args.category,
-        tags: args.tags,
-        startDate: args.startDate,
-        endDate: args.endDate,
-        timezone: args.timezone,
-        locationType: args.locationType,
-        venue: args.venue,
-        address: args.address,
-        city: args.city,
-        state: args.state,
-        country: args.country,
-        capacity: args.capacity,
-        ticketType: args.ticketType,
-        ticketPrice: args.ticketPrice,
-        coverImage: args.coverImage,
-        themeColor,
+        ...args,
+        themeColor, // Use validated color
         slug: `${slug}-${Date.now()}`,
         organizerId: user._id,
         organizerName: user.name,
@@ -220,4 +66,71 @@ export const createEvent = mutation({
   },
 });
 
+// Get event by slug
+export const getEventBySlug = query({
+  args: { slug: v.string() },
+  handler: async (ctx, args) => {
+    const event = await ctx.db
+      .query("events")
+      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .unique();
 
+    return event;
+  },
+});
+
+// Get events by organizer
+export const getMyEvents = query({
+  handler: async (ctx) => {
+    const user = await ctx.runQuery(internal.users.getCurrentUser);
+
+    const events = await ctx.db
+      .query("events")
+      .withIndex("by_organizer", (q) => q.eq("organizerId", user._id))
+      .order("desc")
+      .collect();
+
+    return events;
+  },
+});
+
+
+// Delete event
+export const deleteEvent = mutation({
+  args: { eventId: v.id("events") },
+  handler: async (ctx, args) => {
+    const user = await ctx.runQuery(internal.users.getCurrentUser);
+
+    const event = await ctx.db.get(args.eventId);
+    if (!event) {
+      throw new Error("Event not found");
+    }
+
+    // Check if user is the organizer
+    if (event.organizerId !== user._id) {
+      throw new Error("You are not authorized to delete this event");
+    }
+
+    // Delete all registrations for this event
+    const registrations = await ctx.db
+      .query("registrations")
+      .withIndex("by_event", (q) => q.eq("eventId", args.eventId))
+      .collect();
+
+    for (const registration of registrations) {
+      await ctx.db.delete(registration._id);
+    }
+
+    // Delete the event
+    await ctx.db.delete(args.eventId);
+
+    // Update free event count if it was a free event
+    if (event.ticketType === "free" && user.freeEventsCreated > 0) {
+      await ctx.db.patch(user._id, {
+        freeEventsCreated: user.freeEventsCreated - 1,
+      });
+    }
+
+    return { success: true };
+  },
+});

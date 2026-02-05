@@ -2,7 +2,8 @@
 import { api } from '@/convex/_generated/api';
 import { useConvexQuery } from '@/hooks/use-convex-query';
 import { useUser } from '@clerk/nextjs';
-import { useParams, useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
+import { notFound, useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 const EventPage = () => {
@@ -22,7 +23,19 @@ const EventPage = () => {
         api.registrations.checkRegistration,
         event?._id ? { eventId: event._id } : "skip"
     );
-    
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+            </div>
+        );
+    }
+
+    if (!event) { 
+        notFound();
+    }
+
     return (
         <div>EventPage</div>
     )
