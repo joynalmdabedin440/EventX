@@ -27,21 +27,38 @@ export default function AIEventCreator({ onEventGenerated }) {
 
     setLoading(true);
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+
       const response = await fetch("/api/generate-event", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
       const data = await response.json();
+
+      if (!response.ok) {
+        const errorMsg = data.error || "Failed to generate event";
+        toast.error(errorMsg);
+        console.error("API Error:", errorMsg);
+        return;
+      }
+
       console.log("AI Generated Event Data:", data);
       onEventGenerated(data);
       toast.success("Event details generated! Review and customize below.");
       setIsOpen(false);
       setPrompt("");
     } catch (error) {
-      toast.error("Failed to generate event. Please try again.");
-      console.error(error);
+      if (error.name === "AbortError") {
+        toast.error("Request timeout. Please check your connection and try again.");
+      } else {
+        toast.error("Failed to generate event. Please try again.");
+      }
+      console.error("Fetch Error:", error);
     } finally {
       setLoading(false);
     }

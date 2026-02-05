@@ -14,6 +14,20 @@ export async function POST(req) {
       );
     }
 
+    // MOCK RESPONSE FOR TESTING - Remove this after enabling billing
+    const mockResponse = {
+      title: "Tech Meetup: React 19 Deep Dive",
+      description: "Join us for an in-depth exploration of React 19 features including new Actions API and improved hooks. Perfect for developers looking to master the latest React capabilities.",
+      category: "tech",
+      suggestedCapacity: 100,
+      suggestedTicketType: "free"
+    };
+
+    // TODO: Remove mock and enable real API after billing is set up
+    if (process.env.USE_MOCK_AI === "true") {
+      return NextResponse.json(mockResponse);
+    }
+
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const systemPrompt = `You are an event planning assistant. Generate event details based on the user's description.
@@ -44,8 +58,6 @@ Rules:
 
     const response = await result.response;
     const text = response.text();
-      
-    console.log("Raw AI response:", text);
 
     // Clean the response (remove markdown code blocks if present)
     let cleanedText = text.trim();
@@ -64,8 +76,17 @@ Rules:
     return NextResponse.json(eventData);
   } catch (error) {
     console.error("Error generating event:", error);
+    
+    // Handle quota exceeded errors
+    if (error.status === 429) {
+      return NextResponse.json(
+        { error: "API quota exceeded. Please try again later or upgrade your plan." },
+        { status: 429 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: "Failed to generate event" + error.message },
+      { error: `Failed to generate event: ${error.message}` },
       { status: 500 }
     );
   }
