@@ -43,6 +43,33 @@ const EventPage = () => {
         event?._id ? { eventId: event._id } : "skip"
     );
 
+    const handleShare = async () => {
+        const url = window.location.href;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: event.title,
+                    text: event.description.slice(0, 100) + "...",
+                    url: url,
+                });
+            } catch (error) {
+                // User cancelled or error occurred
+            }
+        } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard.writeText(url);
+            toast.success("Link copied to clipboard!");
+        }
+    };
+
+    const handleRegister = () => {
+        if (!user) {
+            toast.error("Please sign in to register");
+            return;
+        }
+        setShowRegisterModal(true);
+    };
+
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -54,6 +81,10 @@ const EventPage = () => {
     if (!event) {
         notFound();
     }
+
+    const isEventFull = event.registrationCount >= event.capacity;
+    const isEventPast = event.endDate < Date.now();
+    const isOrganizer = user?.id === event.organizerId;
 
     return (
         <div
