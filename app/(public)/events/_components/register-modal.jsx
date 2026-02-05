@@ -64,7 +64,7 @@ export default function RegisterModal({ event, isOpen, onClose }) {
     if (isSuccess) {
         return (
             <Dialog open={isOpen} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent className="sm:max-w-md bg-black">
                     <div className="flex flex-col items-center text-center space-y-4 py-6">
                         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
                             <CheckCircle className="w-8 h-8 text-green-600" />
@@ -82,7 +82,7 @@ export default function RegisterModal({ event, isOpen, onClose }) {
                                 <Ticket className="w-4 h-4" />
                                 View My Ticket
                             </Button>
-                            <Button variant="outline" className="w-full" onClick={onClose}>
+                            <Button className="w-full" onClick={onClose}>
                                 Close
                             </Button>
                         </div>
@@ -95,7 +95,7 @@ export default function RegisterModal({ event, isOpen, onClose }) {
     // Registration form
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md bg-black">
                 <DialogHeader>
                     <DialogTitle>Register for Event</DialogTitle>
                     <DialogDescription>
@@ -105,14 +105,14 @@ export default function RegisterModal({ event, isOpen, onClose }) {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Event Summary */}
-                    <div className="bg-muted p-4 rounded-lg space-y-2">
+                    <div className=" p-4 rounded-lg space-y-2 border ">
                         <p className="font-semibold">{event.title}</p>
                         <p className="text-sm text-muted-foreground">
                             {event.ticketType === "free" ? (
                                 "Free Event"
                             ) : (
                                 <span>
-                                    Price: ₹{event.ticketPrice}{" "}
+                                    Price: ${event.ticketPrice}{" "}
                                     <span className="text-xs">(Pay at venue)</span>
                                 </span>
                             )}
@@ -155,7 +155,7 @@ export default function RegisterModal({ event, isOpen, onClose }) {
                     <div className="flex gap-2 pt-2">
                         <Button
                             type="button"
-                            variant="outline"
+                            
                             onClick={onClose}
                             className="flex-1"
                             disabled={isLoading}

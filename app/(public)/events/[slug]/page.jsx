@@ -240,7 +240,7 @@ const EventPage = () => {
                                     <p className="text-3xl font-bold">
                                         {event.ticketType === "free"
                                             ? "Free"
-                                            : `₹${event.ticketPrice}`}
+                                            : `$${event.ticketPrice}`}
                                     </p>
                                     {event.ticketType === "paid" && (
                                         <p className="text-xs text-muted-foreground mt-1">
