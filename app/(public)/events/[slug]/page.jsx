@@ -9,7 +9,18 @@ import { Calendar, Clock, Loader2 } from 'lucide-react';
 import { notFound, useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import Image from 'next/image';
+import { Card, CardContent } from '@/components/ui/card';
 
+
+// Utility function to darken a color
+function darkenColor(color, amount) {
+  const colorWithoutHash = color.replace("#", "");
+  const num = parseInt(colorWithoutHash, 16);
+  const r = Math.max(0, (num >> 16) - amount * 255);
+  const g = Math.max(0, ((num >> 8) & 0x00ff) - amount * 255);
+  const b = Math.max(0, (num & 0x0000ff) - amount * 255);
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
+}
 
 const EventPage = () => {
 
@@ -84,6 +95,39 @@ const EventPage = () => {
                         />
                     </div>
                 )}
+            </div>
+
+            {/* main content */}
+            <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+                <div className="space-y-8">
+                    {/* description */}
+                    <Card
+                        className={"pt-0"}
+                        style={{
+                            backgroundColor: event.themeColor
+                                ? darkenColor(event.themeColor, 0.04)
+                                : "#1e3a8a",
+                        }}
+                    >
+                        <CardContent className="pt-6">
+                            <h2 className="text-2xl font-bold mb-4">About This Event</h2>
+                            <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                                {event.description}
+                            </p>
+                        </CardContent>
+                    </Card>
+
+
+                    {/* location */}
+
+                    {/* organizer info */}
+
+                </div>
+
+                {/* sidebar */}
+                <div className="lg:sticky lg:top-24 h-fit">
+
+                </div>
             </div>
 
 
