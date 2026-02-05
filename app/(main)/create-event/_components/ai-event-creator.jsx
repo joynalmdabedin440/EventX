@@ -47,7 +47,6 @@ export default function AIEventCreator({ onEventGenerated }) {
         return;
       }
 
-      console.log("AI Generated Event Data:", data);
       onEventGenerated(data);
       toast.success("Event details generated! Review and customize below.");
       setIsOpen(false);
