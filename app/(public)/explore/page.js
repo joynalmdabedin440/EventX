@@ -31,20 +31,20 @@ const ExplorePage = () => {
 
 
     //fetch featured events
-    const { data: featuredEvents, isLoading: loadingFeatured } = useConvexQuery(api.events.getFeaturedEvents, { limit: 3 });
+    const { data: featuredEvents, isLoading: loadingFeatured } = useConvexQuery(api.explore.getFeaturedEvents, { limit: 3 });
 
     //fetch event by location
 
-    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.events.getEventsByLocation, { city: currentUser?.location?.city || 'Gurgaon', state: currentUser?.location?.state || "Haryana", limit: 4 });
+    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.explore.getEventsByLocation, { city: currentUser?.location?.city || 'Gurgaon', state: currentUser?.location?.state || "Haryana", limit: 4 });
 
    // console.log(localEvents);
 
 
     //get popular events
-    const { data: popularEvents, isLoading: loadingPopular } = useConvexQuery(api.events.getPopularEvents, { limit: 6 });
+    const { data: popularEvents, isLoading: loadingPopular } = useConvexQuery(api.explore.getPopularEvents, { limit: 6 });
 
     //category count
-    const { data: categoryCounts } = useConvexQuery(api.events.getCategoryCounts);
+    const { data: categoryCounts } = useConvexQuery(api.explore.getCategoryCounts);
 
     const categoriesWithCounts = CATEGORIES.map(cat => {
         return {
