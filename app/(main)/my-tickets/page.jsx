@@ -72,6 +72,7 @@ export default function MyTicketsPage() {
                         View and manage your event registrations
                     </p>
                 </div>
+                
                 {/* Upcoming Tickets */}
                 {upcomingTickets?.length > 0 && (
                     <div className="mb-12">
