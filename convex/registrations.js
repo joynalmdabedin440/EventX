@@ -68,7 +68,6 @@ export const checkRegistration = query({
     const user = await ctx.runQuery(internal.users.getCurrentUser);
 
     if (!user) return null;
-
     const registration = await ctx.db
       .query("registrations")
       .withIndex("by_event_user", (q) =>
