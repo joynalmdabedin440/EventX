@@ -159,7 +159,7 @@ export default function MyTicketsPage() {
                                 <p className="font-mono text-sm">{selectedTicket.qrCode}</p>
                             </div>
 
-                            <div className="bg-muted p-4 rounded-lg space-y-2 text-sm">
+                            <div className="border p-4 rounded-lg space-y-2 text-sm ">
                                 <div className="flex items-center gap-2">
                                     <Calendar className="w-4 h-4" />
                                     <span>

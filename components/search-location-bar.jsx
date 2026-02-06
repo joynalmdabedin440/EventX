@@ -3,12 +3,11 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, Calendar, Loader2 } from "lucide-react";
-import { State, City } from "country-state-city";
 import { format } from "date-fns";
 import { useConvexQuery, useConvexMutation } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
 import { createLocationSlug } from "@/lib/location-utils";
-import { getCategoryIcon } from "@/lib/data";
+import { getCategoryIcon, BANGLADESH_LOCATIONS } from "@/lib/data";
 
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +37,7 @@ export default function SearchLocationBar() {
     searchQuery.trim().length >= 2 ? { query: searchQuery, limit: 5 } : "skip"
   );
 
-  const indianStates = useMemo(() => State.getStatesOfCountry("IN"), []);
+  const divisions = useMemo(() => Object.keys(BANGLADESH_LOCATIONS), []);
 
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
@@ -62,12 +61,10 @@ export default function SearchLocationBar() {
     };
   }
 
-  const cities = useMemo(() => {
+  const districts = useMemo(() => {
     if (!selectedState) return [];
-    const state = indianStates.find((s) => s.name === selectedState);
-    if (!state) return [];
-    return City.getCitiesOfState("IN", state.isoCode);
-  }, [selectedState, indianStates]);
+    return BANGLADESH_LOCATIONS[selectedState] || [];
+  }, [selectedState]);
 
   const debouncedSetQuery = useRef(
     debounce((value) => setSearchQuery(value), 300)
@@ -89,7 +86,7 @@ export default function SearchLocationBar() {
     try {
       if (currentUser?.interests && currentUser?.location) {
         await updateLocation({
-          location: { city, state, country: "India" },
+          location: { city, state, country: "Bangladesh" },
           interests: currentUser.interests,
         });
       }
@@ -190,15 +187,15 @@ export default function SearchLocationBar() {
         </SelectTrigger>
         <SelectContent>
           {/* <SelectItem value="">State</SelectItem> */}
-          {indianStates.map((state) => (
-            <SelectItem key={state.isoCode} value={state.name}>
-              {state.name}
+          {divisions.map((division) => (
+            <SelectItem key={division} value={division}>
+              {division}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      {/* City Select */}
+      {/* District Select */}
       <Select
         value={selectedCity}
         onValueChange={(value) => {
@@ -210,13 +207,12 @@ export default function SearchLocationBar() {
         disabled={!selectedState}
       >
         <SelectTrigger className="w-32 h-9 rounded-none rounded-r-md ">
-          <SelectValue placeholder="City" />
+          <SelectValue placeholder="District" />
         </SelectTrigger>
         <SelectContent>
-          {/* <SelectItem value="">City</SelectItem> */}
-          {cities.map((city) => (
-            <SelectItem key={city.name} value={city.name}>
-              {city.name}
+          {districts.map((district) => (
+            <SelectItem key={district} value={district}>
+              {district}
             </SelectItem>
           ))}
         </SelectContent>

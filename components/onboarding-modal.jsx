@@ -16,11 +16,10 @@ import { Label } from "@/components/ui/label"
 import { useMemo, useState } from "react";
 import { Progress } from "./ui/progress"
 import { ArrowLeft, ArrowRight, Heart, MapPin } from "lucide-react"
-import { CATEGORIES } from "@/lib/data"
+import { CATEGORIES, BANGLADESH_LOCATIONS } from "@/lib/data"
 import { Badge } from "./ui/badge"
 import { useConvexMutation } from "@/hooks/use-convex-query"
 import { api } from "@/convex/_generated/api"
-import { City, State } from "country-state-city"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { toast } from "sonner"
 
@@ -31,20 +30,18 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
     const [location, setLocation] = useState({
         city: '',
         state: '',
-        country: 'IN'
+        country: 'BD'
     });
-    // Get Indian states
-    const indianStates = useMemo(() => {
-        return State.getStatesOfCountry("IN");
+    // Get Bangladesh divisions
+    const divisions = useMemo(() => {
+        return Object.keys(BANGLADESH_LOCATIONS);
     }, []);
 
-    // Get cities based on selected state
-    const cities = useMemo(() => {
+    // Get districts based on selected division
+    const districts = useMemo(() => {
         if (!location.state) return [];
-        const selectedState = indianStates.find((s) => s.name === location.state);
-        if (!selectedState) return [];
-        return City.getCitiesOfState("IN", selectedState.isoCode);
-    }, [location.state, indianStates]);
+        return BANGLADESH_LOCATIONS[location.state] || [];
+    }, [location.state]);
 
 
 
@@ -181,19 +178,19 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
                                     }}
                                 >
                                     <SelectTrigger id="state" className="h-11 w-full">
-                                        <SelectValue placeholder="Select state" />
+                                        <SelectValue placeholder="Select Division" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {indianStates.map((state) => (
-                                            <SelectItem key={state.isoCode} value={state.name}>
-                                                {state.name}
+                                        {divisions.map((division) => (
+                                            <SelectItem key={division} value={division}>
+                                                {division}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="city">City</Label>
+                                <Label htmlFor="city">District</Label>
                                 <Select
                                     value={location.city}
                                     onValueChange={(value) =>
@@ -204,20 +201,20 @@ export function OnboardingModal({ isOpen, onClose, onComplete }) {
                                     <SelectTrigger id="city" className="h-11 w-full">
                                         <SelectValue
                                             placeholder={
-                                                location.state ? "Select city" : "State first"
+                                                location.state ? "Select district" : "Division first"
                                             }
                                         />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {cities.length > 0 ? (
-                                            cities.map((city) => (
-                                                <SelectItem key={city.name} value={city.name}>
-                                                    {city.name}
+                                        {districts.length > 0 ? (
+                                            districts.map((district) => (
+                                                <SelectItem key={district} value={district}>
+                                                    {district}
                                                 </SelectItem>
                                             ))
                                         ) : (
-                                            <SelectItem value="no-cities" disabled>
-                                                No cities available
+                                            <SelectItem value="no-districts" disabled>
+                                                No districts available
                                             </SelectItem>
                                         )}
                                     </SelectContent>

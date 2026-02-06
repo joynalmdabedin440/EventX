@@ -230,7 +230,7 @@ const ExplorePage = () => {
             {popularEvents && popularEvents.length > 0 && (
                 <div className="mb-16">
                     <div className="mb-6">
-                        <h2 className="text-3xl font-bold mb-1">Popular Across India</h2>
+                        <h2 className="text-3xl font-bold mb-1">Popular Across Bangladesh</h2>
                         <p className="text-muted-foreground">Trending events nationwide</p>
                     </div>
 

@@ -9,7 +9,6 @@ import { Controller, useForm } from 'react-hook-form';
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from 'date-fns';
-import { City, State } from 'country-state-city';
 import UpgradeModal from '@/components/upgrade-modal';
 import Image from 'next/image';
 import UnsplashImagePicker from '@/components/unsplash-image-picker';
@@ -21,7 +20,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CATEGORIES } from '@/lib/data';
+import { CATEGORIES, BANGLADESH_LOCATIONS } from '@/lib/data';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import AIEventCreator from './_components/ai-event-creator';
@@ -96,15 +95,6 @@ const CreateEventPage = () => {
     const endDate = watch("endDate");
     const coverImage = watch("coverImage");
 
-    const indianStates = useMemo(() => State.getStatesOfCountry("IN"), []);
-
-    const cities = useMemo(() => {
-        if (!selectedState) return [];
-        const st = indianStates.find((s) => s.name === selectedState);
-        if (!st) return [];
-        return City.getCitiesOfState("IN", st.isoCode);
-    }, [selectedState, indianStates]);
-
     // Color presets - show all for Pro, only default for Free
     const colorPresets = [
         "#1e3a8a", // Default color (always available)
@@ -150,13 +140,6 @@ const CreateEventPage = () => {
                 return;
             }
 
-            // Check if trying to use custom color without Pro
-            if (data.themeColor !== "#1e3a8a" && !hasPro) {
-                setUpgradeReason("color");
-                setShowUpgradeModal(true);
-                return;
-            }
-
             await createEvent({
                 title: data.title,
                 description: data.description,
@@ -170,7 +153,7 @@ const CreateEventPage = () => {
                 address: data.address || undefined,
                 city: data.city,
                 state: data.state || undefined,
-                country: "India",
+                country: "Bangladesh",
                 capacity: data.capacity,
                 ticketType: data.ticketType,
                 ticketPrice: data.ticketPrice || undefined,
@@ -425,12 +408,12 @@ const CreateEventPage = () => {
                                         }}
                                     >
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select state" />
+                                            <SelectValue placeholder="Select Division" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {indianStates.map((s) => (
-                                                <SelectItem key={s.isoCode} value={s.name}>
-                                                    {s.name}
+                                            {Object.keys(BANGLADESH_LOCATIONS).map((division) => (
+                                                <SelectItem key={division} value={division}>
+                                                    {division}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -450,14 +433,14 @@ const CreateEventPage = () => {
                                         <SelectTrigger className="w-full">
                                             <SelectValue
                                                 placeholder={
-                                                    selectedState ? "Select city" : "Select state first"
+                                                    selectedState ? "Select District" : "Select Division first"
                                                 }
                                             />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {cities.map((c) => (
-                                                <SelectItem key={c.name} value={c.name}>
-                                                    {c.name}
+                                            {selectedState && BANGLADESH_LOCATIONS[selectedState]?.map((district) => (
+                                                <SelectItem key={district} value={district}>
+                                                    {district}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>

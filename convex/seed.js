@@ -56,7 +56,7 @@ Pizza and drinks provided!`,
   },
   {
     title: "Indie Music Night - Acoustic Sessions",
-    description: `An evening of soulful acoustic performances by indie artists from across India!
+    description: `An evening of soulful acoustic performances by indie artists from across Bangladesh!
 
 Featuring:
 - 5 handpicked indie bands
@@ -260,7 +260,7 @@ Energy drinks and snacks available. Exciting commentary and crowd interaction!`,
     city: "Noida",
     state: "Uttar Pradesh",
     venue: "https://maps.google.com/?q=DLF+Mall+Noida",
-    address: "Game Arena, DLF Mall of India, Noida",
+    address: "Game Arena, City Center, Dhaka",
     capacity: 80,
     ticketType: "paid",
     ticketPrice: 200,
@@ -665,9 +665,9 @@ export const run = internalMutation({
         name: "EventHub Team",
         hasCompletedOnboarding: true,
         location: {
-          city: "Bangalore",
-          state: "Karnataka",
-          country: "India",
+          city: "Dhaka",
+          state: "Dhaka",
+          country: "Bangladesh",
         },
         interests: ["tech", "music", "business"],
         freeEventsCreated: 0,
@@ -693,9 +693,9 @@ export const run = internalMutation({
         organizerName: organizer.name,
         startDate,
         endDate,
-        timezone: "Asia/Kolkata",
+        timezone: "Asia/Dhaka",
         locationType: "physical",
-        country: "India",
+        country: "Bangladesh",
         registrationCount,
         createdAt: Date.now(),
         updatedAt: Date.now(),
