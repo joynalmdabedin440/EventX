@@ -229,13 +229,13 @@ export default function EventDashboardPage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          <Card className="py-0">
+          <Card className="py-0 bg-gray-50/5">
             <CardContent className="p-6 flex items-center gap-3">
               <div className="p-3 bg-purple-100 rounded-lg">
                 <Users className="w-6 h-6 text-purple-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold">
+                <p className="text-2xl font-bold text-white">
                   {stats.totalRegistrations}/{stats.capacity}
                 </p>
                 <p className="text-sm text-muted-foreground">Capacity</p>
@@ -243,51 +243,51 @@ export default function EventDashboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="py-0">
+          <Card className="py-0 bg-gray-50/5">
             <CardContent className="p-6 flex items-center gap-3">
               <div className="p-3 bg-green-100 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{stats.checkedInCount}</p>
+                <p className="text-2xl font-bold text-white">{stats.checkedInCount}</p>
                 <p className="text-sm text-muted-foreground">Checked In</p>
               </div>
             </CardContent>
           </Card>
 
           {event.ticketType === "paid" ? (
-            <Card className="py-0">
+            <Card className="py-0 bg-gray-50/5">
               <CardContent className="p-6 flex items-center gap-3">
                 <div className="p-3 bg-blue-100 rounded-lg">
                   <TrendingUp className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">₹{stats.totalRevenue}</p>
+                  <p className="text-2xl font-bold text-white">${stats.totalRevenue}</p>
                   <p className="text-sm text-muted-foreground">Revenue</p>
                 </div>
               </CardContent>
             </Card>
           ) : (
-            <Card className="py-0">
+            <Card className="py-0 bg-gray-50/5">
               <CardContent className="p-6 flex items-center gap-3">
                 <div className="p-3 bg-orange-100 rounded-lg">
                   <TrendingUp className="w-6 h-6 text-orange-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{stats.checkInRate}%</p>
+                  <p className="text-2xl font-bold text-white">{stats.checkInRate}%</p>
                   <p className="text-sm text-muted-foreground">Check-in Rate</p>
                 </div>
               </CardContent>
             </Card>
           )}
 
-          <Card className="py-0">
+          <Card className="py-0 bg-gray-50/5">
             <CardContent className="p-6 flex items-center gap-3">
               <div className="p-3 bg-amber-100 rounded-lg">
                 <Clock className="w-6 h-6 text-amber-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold">
+                <p className="text-2xl font-bold text-white">
                   {stats.isEventPast
                     ? "Ended"
                     : stats.hoursUntilEvent > 24
@@ -307,7 +307,7 @@ export default function EventDashboardPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-4">
+          <TabsList className="mb-4 bg-gray-50/20">
             <TabsTrigger value="all">
               All ({stats.totalRegistrations})
             </TabsTrigger>
@@ -331,9 +331,9 @@ export default function EventDashboardPage() {
               />
             </div>
             <Button
-              variant="outline"
+              
               onClick={handleExportCSV}
-              className="gap-2"
+              className="gap-2 border"
             >
               <Download className="w-4 h-4" />
               Export CSV
