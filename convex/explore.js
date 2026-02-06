@@ -2,33 +2,7 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
-
-export const getFeaturedEvents = query({
-  args: {
-    limit: v.optional(v.number()),
-  },
-  handler: async (ctx, args) => {
-    const now = Date.now();
-
-    const events = await ctx.db
-      .query("events")
-      .withIndex("by_start_date")
-      .filter((q) => q.gte(q.field("startDate"), now))
-      .order("desc")
-      .collect()
-    
-    //sort by registration count for featured
-    const featured = events
-      .sort((a, b) => b.registrationCount - a.registrationCount)
-      .slice(0, args.limit ?? 3);
-    
-    return featured;
-
-  }
-});
-
 // get events by location (city and state)
-
 export const getEventsByLocation = query({
   args: {
     city: v.optional(v.string()),
@@ -64,6 +38,48 @@ export const getEventsByLocation = query({
 
 });
 
+// Get events by category with pagination
+export const getEventsByCategory = query({
+  args: {
+    category: v.string(),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+    const events = await ctx.db
+      .query("events")
+      .withIndex("by_category", (q) => q.eq("category", args.category))
+      .filter((q) => q.gte(q.field("startDate"), now))
+      .collect();
+
+    return events.slice(0, args.limit ?? 12);
+  },
+});
+
+export const getFeaturedEvents = query({
+  args: {
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+
+    const events = await ctx.db
+      .query("events")
+      .withIndex("by_start_date")
+      .filter((q) => q.gte(q.field("startDate"), now))
+      .order("desc")
+      .collect()
+    
+    //sort by registration count for featured
+    const featured = events
+      .sort((a, b) => b.registrationCount - a.registrationCount)
+      .slice(0, args.limit ?? 3);
+    
+    return featured;
+
+  }
+});
+
 // get popular events by registration count
 
 export const getPopularEvents = query({
@@ -90,24 +106,6 @@ export const getPopularEvents = query({
     
   },
 })
-
-// Get events by category with pagination
-export const getEventsByCategory = query({
-  args: {
-    category: v.string(),
-    limit: v.optional(v.number()),
-  },
-  handler: async (ctx, args) => {
-    const now = Date.now();
-    const events = await ctx.db
-      .query("events")
-      .withIndex("by_category", (q) => q.eq("category", args.category))
-      .filter((q) => q.gte(q.field("startDate"), now))
-      .collect();
-
-    return events.slice(0, args.limit ?? 12);
-  },
-});
 
 // Get event counts by category
 export const getCategoryCounts = query({

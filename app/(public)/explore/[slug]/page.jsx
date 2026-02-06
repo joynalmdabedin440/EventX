@@ -37,14 +37,14 @@ const DynamicExplorePage = () => {
 
   // get events based on category or location
   const { data: events, isLoading } = useConvexQuery(
-    isCategory ? api.events.getEventsByCategory : api.events.getEventsByLocation,
+    isCategory ? api.explore.getEventsByCategory : api.explore.getEventsByLocation,
     isCategory ? { category: slug, limit: 50 }
       : city && state ? { city, state, limit: 50 }
         : "skip"
   );
 
   const handleEventClick = (eventSlug) => {
-    router.push(`/explore/${eventSlug}`);
+    router.push(`/events/${eventSlug}`);
   }
 
   if (isLoading) {
