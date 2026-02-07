@@ -37,7 +37,7 @@ A modern, full-stack event management platform built with Next.js, Convex, and C
 ### Frontend
 - **Framework**: Next.js 16 (App Router)
 - **UI Library**: React 19
-- **Styling**: Tailwind CSS 4.0
+- **Styling**: Tailwind CSS 4.0, Shadcn
 - **Component Library**: Radix UI
 - **Icons**: Lucide React
 - **Forms**: React Hook Form with Zod validation
@@ -92,7 +92,7 @@ eventx/
 └── public/                       # Static assets
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -105,8 +105,8 @@ eventx/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/eventx.git
-   cd eventx
+   git clone https://github.com/joynalmdabedin440/EventX
+   cd eventX
    ```
 
 2. **Install dependencies**
@@ -154,7 +154,7 @@ eventx/
 
    Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## 📖 Usage
+## Usage
 
 ### Creating an Event
 
@@ -184,7 +184,7 @@ eventx/
 4. Generate QR codes for check-in
 5. Edit or delete events
 
-## 🔧 API Documentation
+## API Documentation
 
 ### Convex Functions
 
@@ -215,14 +215,14 @@ eventx/
 #### Dashboard
 - `getDashboardStats`: Get organizer dashboard statistics
 
-## 🧪 Testing
+## Testing
 
 Run the linter:
 ```bash
 npm run lint
 ```
 
-## 🚢 Deployment
+## Deployment
 
 ### Vercel (Recommended)
 
@@ -242,7 +242,7 @@ npm run lint
    npm start
    ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please follow these steps:
 
@@ -264,7 +264,7 @@ We welcome contributions! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Next.js](https://nextjs.org/) for the amazing React framework
 - [Convex](https://convex.dev/) for the real-time backend
@@ -273,7 +273,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Radix UI](https://radix-ui.com/) for accessible components
 - [Google Generative AI](https://ai.google.dev/) for AI features
 
-## 📞 Support
+## Support
 
 If you have any questions or need help:
 
@@ -283,4 +283,4 @@ If you have any questions or need help:
 
 ---
 
-**Made with ❤️ for event organizers and attendees worldwide**
+**Made with for event organizers and attendees worldwide**
