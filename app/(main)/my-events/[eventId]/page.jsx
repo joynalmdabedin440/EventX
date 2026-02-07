@@ -215,6 +215,7 @@ export default function EventDashboardPage() {
         </div>
 
         {/* Quick Actions - Show QR Scanner if event is today */}
+       
         {stats.isEventToday && !stats.isEventPast && (
           <Button
             size="lg"
@@ -226,6 +227,8 @@ export default function EventDashboardPage() {
             Scan QR Code to Check-In
           </Button>
         )}
+
+        
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">

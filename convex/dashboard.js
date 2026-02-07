@@ -14,7 +14,7 @@ export const getEventDashboard = query({
 
     const event = await ctx.db.get(args.eventId);
     if (!event) {
-      throw new Error("Event not found");
+      return null;
     }
 
     // Check if user is the organizer
@@ -79,3 +79,4 @@ export const getEventDashboard = query({
     };
   },
 });
+

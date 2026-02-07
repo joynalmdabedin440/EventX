@@ -6,6 +6,16 @@ import { format } from "date-fns";
 import { CheckCircle, Circle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
+// Helper function to safely format dates
+const safeFormat = (timestamp, formatStr = "PPp") => {
+  if (!timestamp || isNaN(timestamp)) return "Invalid date";
+  try {
+    return format(new Date(timestamp), formatStr);
+  } catch {
+    return "Invalid date";
+  }
+};
+
 // Attendee Card Component
 export function AttendeeCard({ registration }) {
   const { mutate: checkInAttendee, isLoading } = useConvexMutation(
@@ -49,8 +59,8 @@ export function AttendeeCard({ registration }) {
             <span>
               {registration.checkedIn ? "⏰ Checked in" : "📅 Registered"}{" "}
               {registration.checkedIn && registration.checkedInAt
-                ? format(registration.checkedInAt, "PPp")
-                : format(registration.registeredAt, "PPp")}
+                ? safeFormat(registration.checkedInAt, "PPp")
+                : safeFormat(registration.registeredAt, "PPp")}
             </span>
             <span className="font-mono">QR: {registration.qrCode}</span>
           </div>

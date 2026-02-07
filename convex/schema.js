@@ -78,21 +78,22 @@ export default defineSchema({
     registrations: defineTable({
         eventId: v.id("events"),
         userId: v.id("users"),
-        
+
         //attendance status
         attendeeName: v.string(),
         attendeeEmail: v.string(),
-        
+
         //qr code for entry
         qrCode: v.string(),
 
-        //check-in 
+        //check-in
         checkedIn: v.boolean(),
         checkedInAt: v.optional(v.number()),
         //status
         status: v.union(v.literal("confirmed"), v.literal("cancelled")),
 
-
+        //timestamps
+        registeredAt: v.number(),
 
     }).index("by_user", ["userId"]).index("by_event", ["eventId"]).index("by_event_user", ["eventId", "userId"]).index("by_qr_code", ["qrCode"]),
 

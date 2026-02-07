@@ -35,7 +35,7 @@ const ExplorePage = () => {
 
     //fetch event by location
 
-    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.explore.getEventsByLocation, { city: currentUser?.location?.city || 'Gurgaon', state: currentUser?.location?.state || "Haryana", limit: 4 });
+    const { data: localEvents, isLoading: loadingLocalEvents } = useConvexQuery(api.explore.getEventsByLocation, { city: currentUser?.location?.city || 'Dhaka', state: currentUser?.location?.state || "Dhaka", limit: 4 });
 
    // console.log(localEvents);
 
@@ -54,9 +54,9 @@ const ExplorePage = () => {
     })
 
     //handle event click
-    const handleEventClick = (eventId) => {
+    const handleEventClick = (eventSlug) => {
 
-        router.push(`/events/${eventId}`);
+        router.push(`/events/${eventSlug}`);
 
     }
     const handleCategoryClick = (categoryId) => {
@@ -67,8 +67,8 @@ const ExplorePage = () => {
 
     // handle view local events
     const handleViewLocalEvents = () => {
-        const city = currentUser?.location?.city || 'Gurgaon';
-        const state = currentUser?.location?.state || 'Haryana';
+        const city = currentUser?.location?.city || 'Dhaka';
+        const state = currentUser?.location?.state || 'Dhaka';
         const slug = createLocationSlug(city, state);
         router.push(`/explore/${slug}`);
     }
@@ -105,7 +105,7 @@ const ExplorePage = () => {
                                 <CarouselContent>
                                     {featuredEvents.map((event) => (
                                         <CarouselItem key={event._id}>
-                                            <div onClick={() => handleEventClick(event._id)}
+                                            <div onClick={() => handleEventClick(event.slug)}
                                                 className='relative h-[400px] rounded-xl overflow-hidden cursor-pointer'>
                                                 {
                                                     event.coverImage ? (<Image src={event.coverImage} alt={event.title} fill className="object-cover" priority />) : (<div className='absolute inset-0' style={{ backgroundColor: event.themeColor }}>No Image</div>)
