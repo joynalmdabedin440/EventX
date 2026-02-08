@@ -7,7 +7,7 @@ import { getCategoryIcon, getCategoryLabel } from '@/lib/data';
 import { useUser } from '@clerk/nextjs';
 import { Calendar, CheckCircle, Clock, ExternalLink, Loader2, MapPin, Share2, Ticket, Users } from 'lucide-react';
 import { notFound, useParams, useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,12 @@ const EventPage = () => {
     const router = useRouter();
     const { user } = useUser();
     const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [currentTime, setCurrentTime] = useState(() => Date.now());
+
+    useEffect(() => {
+        const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
+        return () => clearInterval(interval);
+    }, []);
 
     // Fetch event details
     const { data: event, isLoading } = useConvexQuery(api.events.getEventBySlug, {
@@ -43,6 +49,10 @@ const EventPage = () => {
         api.registrations.checkRegistration,
         event?._id ? { eventId: event._id } : "skip"
     );
+
+    const isEventFull = event ? event.registrationCount >= event.capacity : false;
+    const isEventPast = useMemo(() => event ? event.endDate < currentTime : false, [event, currentTime]);
+    const isOrganizer = user?.id === event?.organizerId;
 
     const handleShare = async () => {
         const url = window.location.href;
@@ -82,10 +92,6 @@ const EventPage = () => {
     if (!event) {
         notFound();
     }
-
-    const isEventFull = event.registrationCount >= event.capacity;
-    const isEventPast = event.endDate < Date.now();
-    const isOrganizer = user?.id === event.organizerId;
 
     return (
         <div
