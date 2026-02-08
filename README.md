@@ -9,6 +9,8 @@
 
 A modern, full-stack event management platform built with Next.js, Convex, and Clerk. EventX empowers organizers to create stunning events and attendees to discover and register for amazing experiences.
 
+**🔗 Live Demo:** [https://event-x-gamma.vercel.app/](https://event-x-gamma.vercel.app/)
+
 ## 🌟 Features
 
 ### For Event Organizers
