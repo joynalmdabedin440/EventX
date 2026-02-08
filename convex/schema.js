@@ -93,7 +93,7 @@ export default defineSchema({
         status: v.union(v.literal("confirmed"), v.literal("cancelled")),
 
         //timestamps
-        registeredAt: v.number(),
+        registeredAt: v.optional(v.number()),
 
     }).index("by_user", ["userId"]).index("by_event", ["eventId"]).index("by_event_user", ["eventId", "userId"]).index("by_qr_code", ["qrCode"]),
 
